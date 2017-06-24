@@ -23,9 +23,9 @@ CPU::CPU()
     };
 }
 
-int8_t CPU::calculateParity(int8_t reg)
+uint8_t CPU::calculateParity(uint8_t reg) // Register needs to be converted to unsigned for method to work
 {
-   int8_t count = 0;
+   uint8_t count = 0;
    while (reg)
    {
        if ((reg & 1) == 1)
@@ -37,7 +37,7 @@ int8_t CPU::calculateParity(int8_t reg)
 
 int CPU::addBytes(int8_t byte1, int8_t byte2, bool carryIn, bool carryOut)
 {
-    int8_t carry = carryIn ? flags.carry : 0;
+    uint8_t carry = carryIn ? flags.carry : 0;
 
     int8_t sum = 0;
     for (int i = 0; i <= 7; ++i)
@@ -54,6 +54,8 @@ int CPU::addBytes(int8_t byte1, int8_t byte2, bool carryIn, bool carryOut)
         byte1 >>= 1;
         byte2 >>= 1;
     }
+
+    Q_ASSERT(carry == 1 || carry == 0);
 
     // Set the rest of the flags
     if (carryOut) flags.carry = carry;
@@ -89,3 +91,16 @@ void CPU::INR_E() { INR(registers.E); }
 void CPU::INR_H() { INR(registers.H); }
 void CPU::INR_L() { INR(registers.L); }
 //void CPU::INR_M() { INR(registers.M); }
+
+void CPU::DCR(int8_t &reg)
+{
+    reg = addBytes(reg, -1, false, false);
+}
+void CPU::DCR_A() { DCR(registers.A); }
+void CPU::DCR_B() { DCR(registers.B); }
+void CPU::DCR_C() { DCR(registers.C); }
+void CPU::DCR_D() { DCR(registers.D); }
+void CPU::DCR_E() { DCR(registers.E); }
+void CPU::DCR_H() { DCR(registers.H); }
+void CPU::DCR_L() { DCR(registers.L); }
+//void CPU::DCR_M() { DCR(registers.M); }

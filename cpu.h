@@ -29,7 +29,7 @@ public:
     } flags;
 
 
-   int8_t calculateParity(int8_t);
+   uint8_t calculateParity(uint8_t);
    int addBytes(int8_t, int8_t, bool, bool);
 
    void NOP();
@@ -45,6 +45,16 @@ public:
    void INR_H();
    void INR_L();
    void INR_M();
+
+   void DCR(int8_t &reg);
+   void DCR_A();
+   void DCR_B();
+   void DCR_C();
+   void DCR_D();
+   void DCR_E();
+   void DCR_H();
+   void DCR_L();
+   void DCR_M();
 };
 
 #endif // CPU_H
