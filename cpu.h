@@ -4,18 +4,20 @@
 #include <stdint.h>
 #include <QBitArray>
 
+const int8_t SIGN_BIT = 0b10000000;
+
 class CPU
 {
 public:
     CPU();
     struct dataRegisters {
-        uint8_t A;
-        uint8_t B;
-        uint8_t C;
-        uint8_t D;
-        uint8_t E;
-        uint8_t H;
-        uint8_t L;
+        int8_t A;
+        int8_t B;
+        int8_t C;
+        int8_t D;
+        int8_t E;
+        int8_t H;
+        int8_t L;
     } registers;
 
     struct flagRegisters {
@@ -27,14 +29,14 @@ public:
     } flags;
 
 
-   uint8_t calculateParity(uint8_t);
-   int addBytes(uint8_t, uint8_t, bool, bool);
+   int8_t calculateParity(int8_t);
+   int addBytes(int8_t, int8_t, bool, bool);
 
    void NOP();
    void CMC();
    void STC();
 
-   void INR(uint8_t&);
+   void INR(int8_t&);
    void INR_A();
    void INR_B();
    void INR_C();

@@ -23,9 +23,9 @@ CPU::CPU()
     };
 }
 
-uint8_t CPU::calculateParity(uint8_t reg)
+int8_t CPU::calculateParity(int8_t reg)
 {
-   uint8_t count = 0;
+   int8_t count = 0;
    while (reg)
    {
        if ((reg & 1) == 1)
@@ -35,15 +35,15 @@ uint8_t CPU::calculateParity(uint8_t reg)
    return count;
 }
 
-int CPU::addBytes(uint8_t byte1, uint8_t byte2, bool carryIn, bool carryOut)
+int CPU::addBytes(int8_t byte1, int8_t byte2, bool carryIn, bool carryOut)
 {
-    uint8_t carry = carryIn ? flags.carry : 0;
+    int8_t carry = carryIn ? flags.carry : 0;
 
-    uint8_t sum = 0;
+    int8_t sum = 0;
     for (int i = 0; i <= 7; ++i)
     {
-        uint8_t term1 = byte1 & 1;
-        uint8_t term2 = byte2 & 1;
+        int8_t term1 = byte1 & 1;
+        int8_t term2 = byte2 & 1;
 
         sum += (term1 ^ term2 ^ carry) << i;
         carry = term1 + term2 + carry > 1;
@@ -58,6 +58,7 @@ int CPU::addBytes(uint8_t byte1, uint8_t byte2, bool carryIn, bool carryOut)
     // Set the rest of the flags
     if (carryOut) flags.carry = carry;
     flags.zero = sum == 0;
+    flags.sign = (sum & SIGN_BIT) != 0;
     flags.parity = calculateParity(sum) % 2 == 0;
 
     return sum;
@@ -75,7 +76,7 @@ void CPU::STC()
     flags.carry = true;
 }
 
-void CPU::INR(uint8_t &reg)
+void CPU::INR(int8_t &reg)
 {
     reg = addBytes(reg, 1, false, false);
 }
