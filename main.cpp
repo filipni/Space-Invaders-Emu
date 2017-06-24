@@ -1,7 +1,12 @@
 #include <QApplication>
+#include <QDebug>
+#include <stdint.h>
 
-int main (int argc, char** argv)
+#include <cpu.h>
+
+int main()
 {
-    QApplication app(argc, argv);
-    return app.exec();
+    CPU cpu;
+    cpu.INR_B();
+    qDebug() << cpu.registers.B;
 }
