@@ -4,14 +4,20 @@
 #include <stdint.h>
 #include <QBitArray>
 
-const int8_t SIGN_BIT = 0b10000000;
+const uint8_t SIGN_BIT 				= 0b10000000;
+const uint8_t ZERO_BIT 			= 0b01000000;
+const uint8_t AUX_BIT 				= 0b00010000;
+const uint8_t PARITY_BIT 			= 0b00000100;
+const uint8_t CARRY_BIT 			= 0b00000001;
+
+const uint8_t EMPTY_FLAG_REGISTER 	= 0b00000010;
 
 class CPU
 {
 public:
     CPU();
     struct dataRegisters {
-        int8_t A;
+        int8_t A; // Accumulator
         int8_t B;
         int8_t C;
         int8_t D;
@@ -20,6 +26,7 @@ public:
         int8_t L;
     } registers;
 
+    /*
     struct flagRegisters {
         bool aux;
         bool sign;
@@ -27,10 +34,17 @@ public:
         bool parity;
         bool carry;
     } flags;
+    */
 
+   uint8_t conditionBits;
+   void setConditionBit(uint8_t);
+   void setConditionBit(uint8_t, bool);
+   void clearConditionBit(uint8_t);
+   void toggleConditionBit(uint8_t);
+   bool testConditionBit(uint8_t);
 
    uint8_t calculateParity(uint8_t);
-   int addBytes(int8_t, int8_t, bool, bool);
+   int addBytes(int8_t, int8_t, bool, uint8_t);
 
    void NOP();
    void CMC();
@@ -55,6 +69,8 @@ public:
    void DCR_H();
    void DCR_L();
    void DCR_M();
+
+   void CMA();
 };
 
 #endif // CPU_H
