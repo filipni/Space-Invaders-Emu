@@ -49,6 +49,7 @@ public:
    void DCR_M();
 
    void CMA();
+   void DAA();
 };
 
 #endif // CPU_H

@@ -93,3 +93,30 @@ void CPU::CMA()
 {
     registers.A = registers.A ^ 0xFF;
 }
+
+void CPU::DAA()
+{
+    int8_t lowerNibble = registers.A & 0x0F;
+    if (lowerNibble > 9 || conditionBits.testBit(AUX_BIT))
+    {
+        FlagRegister flagsToCalc(SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT);
+        registers.A = addBytes(registers.A, 6, false, flagsToCalc);
+    }
+
+    int8_t higherNibble = (registers.A & 0xF0) >> 4;
+    if (higherNibble > 9 || conditionBits.testBit(CARRY_BIT))
+    {
+        bool oldCarry = conditionBits.testBit(CARRY_BIT);
+
+        FlagRegister flagsToCalc(SIGN_BIT | ZERO_BIT | PARITY_BIT | CARRY_BIT);
+        higherNibble = addBytes(higherNibble, 6, false, flagsToCalc);
+
+        // Change the higher nibble in register A to the newly calculated value
+        registers.A &= 0x0F;
+        registers.A += higherNibble << 4;
+
+        if (!conditionBits.testBit(CARRY_BIT)) // If no carry out occurs, reset carry bit to old value
+            conditionBits.setBits(CARRY_BIT, oldCarry);
+    }
+}
+
