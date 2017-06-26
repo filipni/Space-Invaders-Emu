@@ -15,6 +15,7 @@ class FlagRegister
 {
 public:
     FlagRegister();
+    FlagRegister(uint8_t);
 
     void setBits(uint8_t bitmask);
     void setBits(uint8_t bitmask, bool val);

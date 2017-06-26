@@ -22,7 +22,7 @@ public:
     } registers;
 
    uint8_t calculateParity(uint8_t);
-   int addBytes(int8_t, int8_t, bool, uint8_t);
+   int addBytes(int8_t, int8_t, bool, FlagRegister);
 
    void NOP();
    void CMC();

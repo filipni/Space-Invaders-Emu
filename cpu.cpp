@@ -17,7 +17,7 @@ uint8_t CPU::calculateParity(uint8_t reg) // Register needs to be converted to u
    return count;
 }
 
-int CPU::addBytes(int8_t byte1, int8_t byte2, bool carryIn, uint8_t flags)
+int CPU::addBytes(int8_t byte1, int8_t byte2, bool carryIn, FlagRegister flagsToCalc)
 {
     uint8_t carry = carryIn ? conditionBits.testBit(CARRY_BIT) : 0;
 
@@ -30,7 +30,7 @@ int CPU::addBytes(int8_t byte1, int8_t byte2, bool carryIn, uint8_t flags)
         sum += (term1 ^ term2 ^ carry) << i;
         carry = term1 + term2 + carry > 1;
 
-        if (i == 3 && flags & AUX_BIT)
+        if (i == 3 && flagsToCalc.testBit(AUX_BIT))
             conditionBits.setBits(AUX_BIT, carry); // Carry from lower to higher nibble
 
         byte1 >>= 1;
@@ -40,10 +40,10 @@ int CPU::addBytes(int8_t byte1, int8_t byte2, bool carryIn, uint8_t flags)
     Q_ASSERT(carry == 1 || carry == 0);
 
     // Set the rest of the flags
-    if (flags & CARRY_BIT) conditionBits.setBits(CARRY_BIT, carry);
-    if (flags & ZERO_BIT) conditionBits.setBits(ZERO_BIT, sum == 0);
-    if (flags & SIGN_BIT) conditionBits.setBits(SIGN_BIT, (sum & SIGN_BIT) != 0);
-    if (flags & PARITY_BIT) conditionBits.setBits(PARITY_BIT, calculateParity(sum) % 2 == 0);
+    if (flagsToCalc.testBit(CARRY_BIT)) conditionBits.setBits(CARRY_BIT, carry);
+    if (flagsToCalc.testBit(ZERO_BIT)) conditionBits.setBits(ZERO_BIT, sum == 0);
+    if (flagsToCalc.testBit(SIGN_BIT)) conditionBits.setBits(SIGN_BIT, (sum & SIGN_BIT) != 0);
+    if (flagsToCalc.testBit(PARITY_BIT)) conditionBits.setBits(PARITY_BIT, calculateParity(sum) % 2 == 0);
 
     return sum;
 }
@@ -62,7 +62,8 @@ void CPU::STC()
 
 void CPU::INR(int8_t &reg)
 {
-    reg = addBytes(reg, 1, false, SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT);
+    FlagRegister flagsToCalc(SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT);
+    reg = addBytes(reg, 1, false, flagsToCalc);
 }
 
 void CPU::INR_A() { INR(registers.A); }
