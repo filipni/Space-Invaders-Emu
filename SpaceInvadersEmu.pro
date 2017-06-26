@@ -6,8 +6,10 @@ QT = core gui widgets
 SOURCES += \
     main.cpp \
     emulator.cpp \
-    cpu.cpp
+    cpu.cpp \
+    flagregister.cpp
 
 HEADERS += \
     emulator.h \
-    cpu.h
+    cpu.h \
+    flagregister.h

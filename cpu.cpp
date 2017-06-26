@@ -2,33 +2,7 @@
 
 CPU::CPU()
 {
-    conditionBits = EMPTY_FLAG_REGISTER;
     memset(&registers, 0, sizeof(registers));
-}
-
-void CPU::setConditionBit(uint8_t bitmask)
-{
-   conditionBits |= bitmask;
-}
-
-void CPU::setConditionBit(uint8_t bitmask, bool val)
-{
-    val ? setConditionBit(bitmask) : clearConditionBit(bitmask);
-}
-
-void CPU::clearConditionBit(uint8_t bitmask)
-{
-   conditionBits &= (bitmask ^ 0xFF);
-}
-
-void CPU::toggleConditionBit(uint8_t bitmask)
-{
-   conditionBits ^= bitmask;
-}
-
-bool CPU::testConditionBit(uint8_t bitmask)
-{
-    return conditionBits & bitmask;
 }
 
 uint8_t CPU::calculateParity(uint8_t reg) // Register needs to be converted to unsigned for method to work
@@ -45,7 +19,7 @@ uint8_t CPU::calculateParity(uint8_t reg) // Register needs to be converted to u
 
 int CPU::addBytes(int8_t byte1, int8_t byte2, bool carryIn, uint8_t flags)
 {
-    uint8_t carry = carryIn ? testConditionBit(CARRY_BIT) : 0;
+    uint8_t carry = carryIn ? conditionBits.testBit(CARRY_BIT) : 0;
 
     int8_t sum = 0;
     for (int i = 0; i <= 7; ++i)
@@ -57,7 +31,7 @@ int CPU::addBytes(int8_t byte1, int8_t byte2, bool carryIn, uint8_t flags)
         carry = term1 + term2 + carry > 1;
 
         if (i == 3 && flags & AUX_BIT)
-            setConditionBit(AUX_BIT, carry); // Carry from lower to higher nibble
+            conditionBits.setBits(AUX_BIT, carry); // Carry from lower to higher nibble
 
         byte1 >>= 1;
         byte2 >>= 1;
@@ -66,10 +40,10 @@ int CPU::addBytes(int8_t byte1, int8_t byte2, bool carryIn, uint8_t flags)
     Q_ASSERT(carry == 1 || carry == 0);
 
     // Set the rest of the flags
-    if (flags & CARRY_BIT) setConditionBit(CARRY_BIT, carry);
-    if (flags & ZERO_BIT) setConditionBit(ZERO_BIT, sum == 0);
-    if (flags & SIGN_BIT) setConditionBit(SIGN_BIT, (sum & SIGN_BIT) != 0);
-    if (flags & PARITY_BIT) setConditionBit(PARITY_BIT, calculateParity(sum) % 2 == 0);
+    if (flags & CARRY_BIT) conditionBits.setBits(CARRY_BIT, carry);
+    if (flags & ZERO_BIT) conditionBits.setBits(ZERO_BIT, sum == 0);
+    if (flags & SIGN_BIT) conditionBits.setBits(SIGN_BIT, (sum & SIGN_BIT) != 0);
+    if (flags & PARITY_BIT) conditionBits.setBits(PARITY_BIT, calculateParity(sum) % 2 == 0);
 
     return sum;
 }
@@ -78,12 +52,12 @@ void CPU::NOP() {}
 
 void CPU::CMC()
 {
-    conditionBits ^= CARRY_BIT;
+    conditionBits.toggleBits(CARRY_BIT);
 }
 
 void CPU::STC()
 {
-    conditionBits |= CARRY_BIT;
+    conditionBits.setBits(CARRY_BIT);
 }
 
 void CPU::INR(int8_t &reg)
