@@ -31,7 +31,8 @@ void FlagRegister::toggleBits(uint8_t bitmask)
     conditionBits ^= bitmask;
 }
 
-bool FlagRegister::testBit(uint8_t bitmask)
+bool FlagRegister::testBits(uint8_t bitmask)
 {
-    return conditionBits & bitmask;
+    uint8_t result = conditionBits & bitmask;
+    return result == bitmask;
 }

@@ -19,7 +19,7 @@ uint8_t CPU::calculateParity(uint8_t reg) // Register needs to be converted to u
 
 int CPU::addBytes(int8_t byte1, int8_t byte2, bool carryIn, FlagRegister flagsToCalc)
 {
-    uint8_t carry = carryIn ? conditionBits.testBit(CARRY_BIT) : 0;
+    uint8_t carry = carryIn ? conditionBits.testBits(CARRY_BIT) : 0;
 
     int8_t sum = 0;
     for (int i = 0; i <= 7; ++i)
@@ -30,7 +30,7 @@ int CPU::addBytes(int8_t byte1, int8_t byte2, bool carryIn, FlagRegister flagsTo
         sum += (term1 ^ term2 ^ carry) << i;
         carry = term1 + term2 + carry > 1;
 
-        if (i == 3 && flagsToCalc.testBit(AUX_BIT))
+        if (i == 3 && flagsToCalc.testBits(AUX_BIT))
             conditionBits.setBits(AUX_BIT, carry); // Carry from lower to higher nibble
 
         byte1 >>= 1;
@@ -40,10 +40,10 @@ int CPU::addBytes(int8_t byte1, int8_t byte2, bool carryIn, FlagRegister flagsTo
     Q_ASSERT(carry == 1 || carry == 0);
 
     // Set the rest of the flags
-    if (flagsToCalc.testBit(CARRY_BIT)) conditionBits.setBits(CARRY_BIT, carry);
-    if (flagsToCalc.testBit(ZERO_BIT)) conditionBits.setBits(ZERO_BIT, sum == 0);
-    if (flagsToCalc.testBit(SIGN_BIT)) conditionBits.setBits(SIGN_BIT, (sum & SIGN_BIT) != 0);
-    if (flagsToCalc.testBit(PARITY_BIT)) conditionBits.setBits(PARITY_BIT, calculateParity(sum) % 2 == 0);
+    if (flagsToCalc.testBits(CARRY_BIT)) conditionBits.setBits(CARRY_BIT, carry);
+    if (flagsToCalc.testBits(ZERO_BIT)) conditionBits.setBits(ZERO_BIT, sum == 0);
+    if (flagsToCalc.testBits(SIGN_BIT)) conditionBits.setBits(SIGN_BIT, (sum & SIGN_BIT) != 0);
+    if (flagsToCalc.testBits(PARITY_BIT)) conditionBits.setBits(PARITY_BIT, calculateParity(sum) % 2 == 0);
 
     return sum;
 }
@@ -97,16 +97,16 @@ void CPU::CMA()
 void CPU::DAA()
 {
     int8_t lowerNibble = registers.A & 0x0F;
-    if (lowerNibble > 9 || conditionBits.testBit(AUX_BIT))
+    if (lowerNibble > 9 || conditionBits.testBits(AUX_BIT))
     {
         FlagRegister flagsToCalc(SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT);
         registers.A = addBytes(registers.A, 6, false, flagsToCalc);
     }
 
     int8_t higherNibble = (registers.A & 0xF0) >> 4;
-    if (higherNibble > 9 || conditionBits.testBit(CARRY_BIT))
+    if (higherNibble > 9 || conditionBits.testBits(CARRY_BIT))
     {
-        bool oldCarry = conditionBits.testBit(CARRY_BIT);
+        bool oldCarry = conditionBits.testBits(CARRY_BIT);
 
         FlagRegister flagsToCalc(SIGN_BIT | ZERO_BIT | PARITY_BIT | CARRY_BIT);
         higherNibble = addBytes(higherNibble, 6, false, flagsToCalc);
@@ -115,7 +115,7 @@ void CPU::DAA()
         registers.A &= 0x0F;
         registers.A += higherNibble << 4;
 
-        if (!conditionBits.testBit(CARRY_BIT)) // If no carry out occurs, reset carry bit to old value
+        if (!conditionBits.testBits(CARRY_BIT)) // If no carry out occurs, reset carry bit to old value
             conditionBits.setBits(CARRY_BIT, oldCarry);
     }
 }

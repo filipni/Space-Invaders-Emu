@@ -21,7 +21,7 @@ public:
     void setBits(uint8_t bitmask, bool val);
     void clearBits(uint8_t bitmask);
     void toggleBits(uint8_t bitmask);
-    bool testBit(uint8_t bitmask);
+    bool testBits(uint8_t bitmask);
 
 private:
     uint8_t conditionBits;
