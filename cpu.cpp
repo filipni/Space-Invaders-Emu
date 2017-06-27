@@ -120,3 +120,303 @@ void CPU::DAA()
     }
 }
 
+void CPU::MOV_B_B()
+{
+    registers.B = registers.B;
+}
+
+void CPU::MOV_B_C()
+{
+    registers.B = registers.C;
+}
+
+
+void CPU::MOV_B_D()
+{
+    registers.B = registers.D;
+}
+
+void CPU::MOV_B_E()
+{
+    registers.B = registers.E;
+}
+
+void CPU::MOV_B_H()
+{
+    registers.B = registers.H;
+}
+
+void CPU::MOV_B_L()
+{
+    registers.B = registers.L;
+}
+
+/*
+void CPU::MOV_B_M()
+{
+    registers.B =
+}
+*/
+
+void CPU::MOV_B_A()
+{
+    registers.B = registers.A;
+}
+
+void CPU::MOV_C_B()
+{
+    registers.C = registers.B;
+}
+
+void CPU::MOV_C_C()
+{
+    registers.C = registers.C;
+}
+
+void CPU::MOV_C_D()
+{
+    registers.C = registers.D;
+}
+
+void CPU::MOV_C_E()
+{
+    registers.C = registers.E;
+}
+
+void CPU::MOV_C_H()
+{
+    registers.C = registers.H;
+}
+
+void CPU::MOV_C_L()
+{
+    registers.C = registers.L;
+}
+
+/*
+void CPU::MOV_C_M()
+{
+    registers.C =
+}
+*/
+
+void CPU::MOV_C_A()
+{
+    registers.C = registers.A;
+}
+
+void CPU::MOV_D_B()
+{
+    registers.D = registers.B;
+}
+
+void CPU::MOV_D_C()
+{
+    registers.D = registers.C;
+}
+
+void CPU::MOV_D_D()
+{
+    registers.D = registers.D;
+}
+
+void CPU::MOV_D_E()
+{
+    registers.D = registers.E;
+}
+
+void CPU::MOV_D_H()
+{
+    registers.D = registers.H;
+}
+
+void CPU::MOV_D_L()
+{
+    registers.D = registers.L;
+}
+
+/*
+void CPU::MOV_D_M()
+{
+    registers.D =
+}
+*/
+
+void CPU::MOV_D_A()
+{
+    registers.D = registers.A;
+}
+
+void CPU::MOV_E_B()
+{
+    registers.E = registers.B;
+}
+
+void CPU::MOV_E_C()
+{
+    registers.E = registers.C;
+}
+
+void CPU::MOV_E_D()
+{
+    registers.E = registers.D;
+}
+
+void CPU::MOV_E_E()
+{
+    registers.E = registers.E;
+}
+
+void CPU::MOV_E_H()
+{
+    registers.E = registers.H;
+}
+
+void CPU::MOV_E_L()
+{
+    registers.E = registers.L;
+}
+
+/*
+void CPU::MOV_E_M()
+{
+    registers.E =
+}
+*/
+
+void CPU::MOV_E_A()
+{
+    registers.E = registers.A;
+}
+
+void CPU::MOV_H_B()
+{
+    registers.H = registers.B;
+}
+
+void CPU::MOV_H_C()
+{
+    registers.H = registers.C;
+}
+
+void CPU::MOV_H_D()
+{
+    registers.H = registers.D;
+}
+
+void CPU::MOV_H_E()
+{
+    registers.H = registers.E;
+}
+
+void CPU::MOV_H_H()
+{
+    registers.H = registers.H;
+}
+
+void CPU::MOV_H_L()
+{
+    registers.H = registers.L;
+}
+
+/*
+void CPU::MOV_H_M()
+{
+    registers.H = registers.E;
+}
+*/
+
+void CPU::MOV_H_A()
+{
+    registers.H = registers.A;
+}
+
+void CPU::MOV_L_B()
+{
+    registers.L = registers.B;
+}
+
+void CPU::MOV_L_C()
+{
+    registers.L = registers.C;
+}
+
+void CPU::MOV_L_D()
+{
+    registers.L = registers.D;
+}
+
+void CPU::MOV_L_E()
+{
+    registers.L = registers.E;
+}
+
+void CPU::MOV_L_H()
+{
+    registers.L = registers.H;
+}
+
+void CPU::MOV_L_L()
+{
+    registers.L = registers.L;
+}
+
+/*
+void CPU::MOV_L_M()
+{
+    registers.L =
+}
+*/
+
+void CPU::MOV_L_A()
+{
+    registers.L = registers.A;
+}
+
+/*
+void CPU::MOV_M()
+{
+}
+*/
+
+void CPU::MOV_A_B()
+{
+    registers.A = registers.B;
+}
+
+void CPU::MOV_A_C()
+{
+    registers.A = registers.C;
+}
+
+void CPU::MOV_A_D()
+{
+    registers.A = registers.D;
+}
+
+void CPU::MOV_A_E()
+{
+    registers.A = registers.E;
+}
+
+void CPU::MOV_A_H()
+{
+    registers.A = registers.H;
+}
+
+void CPU::MOV_A_L()
+{
+    registers.A = registers.L;
+}
+
+/*
+void CPU::MOV_A_M()
+{
+    registers.A =
+}
+*/
+
+void CPU::MOV_A_A()
+{
+    registers.A = registers.A;
+}
