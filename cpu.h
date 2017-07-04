@@ -21,7 +21,6 @@ public:
         int8_t L;
     } registers;
 
-   uint8_t calculateParity(uint8_t);
    int addBytes(int8_t, int8_t, bool, FlagRegister);
 
    void CMC();
@@ -112,6 +111,92 @@ public:
    void MOV_A_L();
    void MOV_A_M();
    void MOV_A_A();
+
+   void STAX_B();
+   void STAX_D();
+
+   void LDAX_B();
+   void LDAX_D();
+
+   void ADD(int8_t);
+   void ADD_B();
+   void ADD_C();
+   void ADD_D();
+   void ADD_E();
+   void ADD_H();
+   void ADD_L();
+   void ADD_M();
+   void ADD_A();
+
+   void ADC(int8_t);
+   void ADC_B();
+   void ADC_C();
+   void ADC_D();
+   void ADC_E();
+   void ADC_H();
+   void ADC_L();
+   void ADC_M();
+   void ADC_A();
+
+   void SUB(int8_t);
+   void SUB_B();
+   void SUB_C();
+   void SUB_D();
+   void SUB_E();
+   void SUB_H();
+   void SUB_L();
+   void SUB_M();
+   void SUB_A();
+
+   void SBB(int8_t);
+   void SBB_B();
+   void SBB_C();
+   void SBB_D();
+   void SBB_E();
+   void SBB_H();
+   void SBB_L();
+   void SBB_M();
+   void SBB_A();
+
+   void ANA(int8_t);
+   void ANA_B();
+   void ANA_C();
+   void ANA_D();
+   void ANA_E();
+   void ANA_H();
+   void ANA_L();
+   void ANA_M();
+   void ANA_A();
+
+   void XRA(int8_t);
+   void XRA_B();
+   void XRA_C();
+   void XRA_D();
+   void XRA_E();
+   void XRA_H();
+   void XRA_L();
+   void XRA_M();
+   void XRA_A();
+
+   void ORA(int8_t);
+   void ORA_B();
+   void ORA_C();
+   void ORA_D();
+   void ORA_E();
+   void ORA_H();
+   void ORA_L();
+   void ORA_M();
+   void ORA_A();
+
+   void CMP(int8_t);
+   void CMP_B();
+   void CMP_C();
+   void CMP_D();
+   void CMP_E();
+   void CMP_H();
+   void CMP_L();
+   void CMP_M();
+   void CMP_A();
 };
 
 #endif // CPU_H

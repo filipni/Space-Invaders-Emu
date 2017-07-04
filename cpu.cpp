@@ -5,17 +5,6 @@ CPU::CPU()
     memset(&registers, 0, sizeof(registers));
 }
 
-uint8_t CPU::calculateParity(uint8_t reg) // Register needs to be converted to unsigned for method to work
-{
-   uint8_t count = 0;
-   while (reg)
-   {
-       if ((reg & 1) == 1)
-           ++count;
-       reg >>= 1;
-   }
-   return count;
-}
 
 int CPU::addBytes(int8_t byte1, int8_t byte2, bool carryIn, FlagRegister flagsToCalc)
 {
@@ -41,9 +30,9 @@ int CPU::addBytes(int8_t byte1, int8_t byte2, bool carryIn, FlagRegister flagsTo
 
     // Set the rest of the flags
     if (flagsToCalc.testBits(CARRY_BIT)) conditionBits.setBits(CARRY_BIT, carry);
-    if (flagsToCalc.testBits(ZERO_BIT)) conditionBits.setBits(ZERO_BIT, sum == 0);
-    if (flagsToCalc.testBits(SIGN_BIT)) conditionBits.setBits(SIGN_BIT, (sum & SIGN_BIT) != 0);
-    if (flagsToCalc.testBits(PARITY_BIT)) conditionBits.setBits(PARITY_BIT, calculateParity(sum) % 2 == 0);
+    if (flagsToCalc.testBits(ZERO_BIT)) conditionBits.calculateZeroBit(sum);
+    if (flagsToCalc.testBits(SIGN_BIT)) conditionBits.calculateSignBit(sum);
+    if (flagsToCalc.testBits(PARITY_BIT)) conditionBits.calculateEvenParityBit(sum);
 
     return sum;
 }
@@ -419,4 +408,99 @@ void CPU::MOV_A_M()
 void CPU::MOV_A_A()
 {
     registers.A = registers.A;
+}
+
+/*
+void CPU::STAX_B()
+{
+
+}
+
+void CPU::STAX_D()
+{
+
+}
+*/
+
+/*
+void CPU::LDAX_B()
+{
+
+}
+
+void CPU::LDAX_D()
+{
+
+}
+*/
+
+void CPU::ADD(int8_t operand)
+{
+    FlagRegister flagsToCalc = CARRY_BIT | SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT;
+    registers.A = addBytes(registers.A, operand, false, flagsToCalc);
+}
+
+void CPU::ADD_B() { ADD(registers.B); }
+void CPU::ADD_C() { ADD(registers.C); }
+void CPU::ADD_D() { ADD(registers.D); }
+void CPU::ADD_E() { ADD(registers.E); }
+void CPU::ADD_H() { ADD(registers.H); }
+void CPU::ADD_L() { ADD(registers.L); }
+// void CPU::ADD_M()
+void CPU::ADD_A() { ADD(registers.L); }
+
+void CPU::ADC(int8_t operand)
+{
+    FlagRegister flagsToCalc = CARRY_BIT | SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT;
+    registers.A = addBytes(registers.A, operand, true, flagsToCalc);
+}
+
+void CPU::ADC_B() { ADC(registers.B); }
+void CPU::ADC_C() { ADC(registers.C); }
+void CPU::ADC_D() { ADC(registers.D); }
+void CPU::ADC_E() { ADC(registers.E); }
+void CPU::ADC_H() { ADC(registers.H); }
+void CPU::ADC_L() { ADC(registers.L); }
+// void CPU::ADC_M() {}
+void CPU::ADC_A() { ADC(registers.A); }
+
+void CPU::SUB(int8_t operand)
+{
+    FlagRegister flagsToCalc = CARRY_BIT | SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT;
+    int8_t operand2Cmp = (operand ^ 0xFF) + 1;
+    registers.A = addBytes(registers.A, operand2Cmp, false, flagsToCalc);
+    conditionBits.setBits(CARRY_BIT, !conditionBits.testBits(CARRY_BIT)); // Since this is a substraction, we invert the carry
+}
+
+void CPU::SUB_B() { SUB(registers.B); }
+void CPU::SUB_C() { SUB(registers.C); }
+void CPU::SUB_D() { SUB(registers.D); }
+void CPU::SUB_E() { SUB(registers.E); }
+void CPU::SUB_H() { SUB(registers.H); }
+void CPU::SUB_L() { SUB(registers.L); }
+// void CPU::SUB_M() {}
+void CPU::SUB_A() { SUB(registers.A); }
+
+void CPU::SBB(int8_t operand)
+{
+    FlagRegister flagsToCalc = CARRY_BIT | SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT;
+    operand = operand + conditionBits.testBits(CARRY_BIT);
+    int8_t operand2Cmp = (operand ^ 0xFF) + 1;
+    registers.A = addBytes(registers.A, operand2Cmp, false, flagsToCalc);
+    conditionBits.setBits(CARRY_BIT, !conditionBits.testBits(CARRY_BIT)); // Since this is a substraction, we invert the carry
+}
+
+void CPU::SBB_B() { SBB(registers.B); }
+void CPU::SBB_C() { SBB(registers.C); }
+void CPU::SBB_D() { SBB(registers.D); }
+void CPU::SBB_E() { SBB(registers.E); }
+void CPU::SBB_H() { SBB(registers.H); }
+void CPU::SBB_L() { SBB(registers.L); }
+//void CPU::SBB_M() {}
+
+void CPU::ANA(int8_t operand)
+{
+    registers.A = registers.A & operand;
+    conditionBits.setBits(CARRY_BIT, false);
+    conditionBits.calculateZeroSignParityBits(registers.A);
 }

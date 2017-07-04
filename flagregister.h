@@ -23,6 +23,12 @@ public:
     void toggleBits(uint8_t bitmask);
     bool testBits(uint8_t bitmask);
 
+    uint8_t calculateParity(uint8_t);
+    void calculateEvenParityBit(uint8_t);
+    void calculateSignBit(uint8_t);
+    void calculateZeroBit(uint8_t);
+    void calculateZeroSignParityBits(uint8_t);
+
 private:
     uint8_t conditionBits;
 };
