@@ -500,7 +500,63 @@ void CPU::SBB_L() { SBB(registers.L); }
 
 void CPU::ANA(int8_t operand)
 {
-    registers.A = registers.A & operand;
+    registers.A &= operand;
     conditionBits.setBits(CARRY_BIT, false);
     conditionBits.calculateZeroSignParityBits(registers.A);
 }
+
+void CPU::ANA_B() { ANA(registers.B); }
+void CPU::ANA_C() { ANA(registers.C); }
+void CPU::ANA_D() { ANA(registers.D); }
+void CPU::ANA_E() { ANA(registers.E); }
+void CPU::ANA_H() { ANA(registers.H); }
+void CPU::ANA_L() { ANA(registers.L); }
+// void CPU::ANA_M() { ANA(); }
+void CPU::ANA_A() { ANA(registers.A); }
+
+void CPU::XRA(int8_t operand)
+{
+    registers.A ^= operand;
+    conditionBits.setBits(CARRY_BIT, false);
+    conditionBits.calculateZeroSignParityBits(registers.A);
+}
+
+void CPU::XRA_B() { XRA(registers.B); }
+void CPU::XRA_C() { XRA(registers.C); }
+void CPU::XRA_D() { XRA(registers.D); }
+void CPU::XRA_E() { XRA(registers.E); }
+void CPU::XRA_H() { XRA(registers.H); }
+void CPU::XRA_L() { XRA(registers.L); }
+// void CPU::XRA_M() { XRA(); }
+void CPU::XRA_A() { XRA(registers.A); }
+
+void CPU::ORA(int8_t operand)
+{
+    registers.A |= operand;
+    conditionBits.setBits(CARRY_BIT, false);
+    conditionBits.calculateZeroSignParityBits(registers.A);
+}
+
+void CPU::ORA_B() { ORA(registers.B); }
+void CPU::ORA_C() { ORA(registers.C); }
+void CPU::ORA_D() { ORA(registers.D); }
+void CPU::ORA_E() { ORA(registers.E); }
+void CPU::ORA_H() { ORA(registers.H); }
+void CPU::ORA_L() { ORA(registers.L); }
+// void CPU::ORA_M() { ORA(); }
+void CPU::ORA_A() { ORA(registers.A); }
+
+void CPU::CMP(int8_t reg)
+{
+    FlagRegister flagsToCalc(SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT);
+    addBytes(registers.A, -reg, false, flagsToCalc);
+}
+
+void CPU::CMP_B() { CMP(registers.B); }
+void CPU::CMP_C() { CMP(registers.C); }
+void CPU::CMP_D() { CMP(registers.D); }
+void CPU::CMP_E() { CMP(registers.E); }
+void CPU::CMP_H() { CMP(registers.H); }
+void CPU::CMP_L() { CMP(registers.L); }
+// void CPU::CMP_M() { CMP(); }
+void CPU::CMP_A() { CMP(registers.A); }
