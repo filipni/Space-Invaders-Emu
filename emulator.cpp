@@ -38,7 +38,7 @@ void Emulator::run()
 
 int Emulator::decode(uint8_t op)
 {
-    int cycles = 0;
+    double cycles = 0;
     QString instruction("");
     switch(op)
     {
@@ -1003,12 +1003,11 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=1;
           break;
       case 0xC0:
-          instruction = "RNZ";
-          cpu.registers.PC +=1;
-          cycles = 4;
+          cpu.RNZ();
+          cycles = 11 / 5;
           break;
       case 0xC1:
-          instruction = "POP B";
+          cpu.POP_B();
           cpu.registers.PC +=1;
           break;
       case 0xC2:
@@ -1020,12 +1019,13 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0xC4:
-          instruction = "CNZ a16";
-          cpu.registers.PC +=3;
+          cpu.CNZ();
+          cycles = 17 / 11;
           break;
       case 0xC5:
-          instruction = "PUSH B";
+          cpu.PUSH_B();
           cpu.registers.PC +=1;
+          cycles = 11;
           break;
       case 0xC6:
           instruction = "ADI d8";
@@ -1036,12 +1036,12 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=1;
           break;
       case 0xC8:
-          instruction = "RZ";
-          cpu.registers.PC +=1;
+          cpu.RZ();
+          cycles = 11 / 5;
           break;
       case 0xC9:
-          instruction = "RET";
-          cpu.registers.PC +=1;
+          cpu.RET();
+          cycles = 10;
           break;
       case 0xCA:
           instruction = "JZ a16";
@@ -1052,8 +1052,8 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0xCC:
-          instruction = "CZ a16";
-          cpu.registers.PC +=3;
+          cpu.CZ();
+          cycles = 17 / 11;
           break;
       case 0xCD:
           cpu.CALL();
@@ -1068,12 +1068,13 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=1;
           break;
       case 0xD0:
-          instruction = "RNC";
-          cpu.registers.PC +=1;
+          cpu.RNC();
+          cycles = 11 / 5;
           break;
       case 0xD1:
-          instruction = "POP D";
+          cpu.POP_D();
           cpu.registers.PC +=1;
+          cycles = 10;
           break;
       case 0xD2:
           instruction = "JNC a16";
@@ -1084,12 +1085,13 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=2;
           break;
       case 0xD4:
-          instruction = "CNC a16";
-          cpu.registers.PC +=3;
+          cpu.CNC();
+          cycles = 17 / 11;
           break;
       case 0xD5:
-          instruction = "PUSH D";
+          cpu.PUSH_D();
           cpu.registers.PC +=1;
+          cycles = 11;
           break;
       case 0xD6:
           instruction = "SUI d8";
@@ -1100,12 +1102,12 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=1;
           break;
       case 0xD8:
-          instruction = "RC";
-          cpu.registers.PC +=1;
+          cpu.RC();
+          cycles = 11 / 5;
           break;
       case 0xD9:
-          instruction = "*RET";
-          cpu.registers.PC +=1;
+          cpu.RET();
+          cycles = 10;
           break;
       case 0xDA:
           instruction = "JC a16";
@@ -1116,8 +1118,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=2;
           break;
       case 0xDC:
-          instruction = "CC a16";
-          cpu.registers.PC +=3;
+          cpu.CC();
+          cycles = 17 / 11;
           break;
       case 0xDD:
           cpu.CALL();
@@ -1132,12 +1134,13 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=1;
           break;
       case 0xE0:
-          instruction = "RPO";
-          cpu.registers.PC +=1;
+          cpu.RPO();
+          cycles = 11 / 5;
           break;
       case 0xE1:
-          instruction = "POP H";
+          cpu.POP_H();
           cpu.registers.PC +=1;
+          cycles = 10;
           break;
       case 0xE2:
           instruction = "JPO a16";
@@ -1148,11 +1151,11 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=1;
           break;
       case 0xE4:
-          instruction = "CPO a16";
-          cpu.registers.PC +=3;
+          cpu.CPO();
+          cycles = 17 / 11;
           break;
       case 0xE5:
-          instruction = "PUSH H";
+          cpu.PUSH_H();
           cpu.registers.PC +=1;
           break;
       case 0xE6:
@@ -1164,8 +1167,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=1;
           break;
       case 0xE8:
-          instruction = "RPE";
-          cpu.registers.PC +=1;
+          cpu.RPE();
+          cycles = 11 / 5;
           break;
       case 0xE9:
           instruction = "PCHL";
@@ -1180,8 +1183,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=1;
           break;
       case 0xEC:
-          instruction = "CPE a16";
-          cpu.registers.PC +=3;
+          cpu.CPE();
+          cycles = 17 / 11;
           break;
       case 0xED:
           cpu.CALL();
@@ -1196,12 +1199,13 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=1;
           break;
       case 0xF0:
-          instruction = "RP";
-          cpu.registers.PC +=1;
+          cpu.RP();
+          cycles = 11 / 5;
           break;
       case 0xF1:
-          instruction = "POP PSW";
+          cpu.POP_PSW();
           cpu.registers.PC +=1;
+          cycles = 10;
           break;
       case 0xF2:
           instruction = "JP a16";
@@ -1212,12 +1216,13 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=1;
           break;
       case 0xF4:
-          instruction = "CP";
-          cpu.registers.PC +=3;
+          cpu.CP();
+          cycles = 17 / 11;
           break;
       case 0xF5:
-          instruction = "PUSH PSW";
+          cpu.PUSH_PSW();
           cpu.registers.PC +=1;
+          cycles = 10;
           break;
       case 0xF6:
           instruction = "ORI d8";
@@ -1228,8 +1233,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=1;
           break;
       case 0xF8:
-          instruction = "RM";
-          cpu.registers.PC +=1;
+          cpu.RM();
+          cycles = 11 / 5;
           break;
       case 0xF9:
           instruction = "SPHL";
@@ -1244,8 +1249,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=1;
           break;
       case 0xFC:
-          instruction = "CM a16";
-          cpu.registers.PC +=3;
+          cpu.CM();
+          cycles = 17 / 11;
           break;
       case 0xFD:
           cpu.CALL();

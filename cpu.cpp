@@ -786,3 +786,15 @@ void CPU::RM() { conditionalReturn(conditionBits.testBits(SIGN_BIT)); }
 void CPU::RP() { conditionalReturn(!conditionBits.testBits(SIGN_BIT)); }
 void CPU::RPE() { conditionalReturn(conditionBits.testBits(PARITY_BIT)); }
 void CPU::RPO() { conditionalReturn(!conditionBits.testBits(PARITY_BIT)); }
+
+void CPU::LDA()
+{
+    uint16_t fromAddr = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
+    registers.A = memory[fromAddr];
+}
+
+void CPU::STA()
+{
+    uint16_t toAddr = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
+    memory[toAddr] = registers.A;
+}

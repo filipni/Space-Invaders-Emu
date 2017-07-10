@@ -275,6 +275,9 @@ public:
    void RP();
    void RPE();
    void RPO();
+
+   void LDA();
+   void STA();
 };
 
 #endif // CPU_H
