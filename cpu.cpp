@@ -763,3 +763,26 @@ void CPU::CM() { conditionalCall(conditionBits.testBits(SIGN_BIT)); }
 void CPU::CP() { conditionalCall(!conditionBits.testBits(SIGN_BIT)); }
 void CPU::CPE() { conditionalCall(conditionBits.testBits(PARITY_BIT)); }
 void CPU::CPO() { conditionalCall(!conditionBits.testBits(PARITY_BIT)); }
+
+void CPU::RET()
+{
+    registers.PC = create16BitReg(memory[registers.SP], memory[registers.SP+1]);
+    registers.SP += 2;
+}
+
+void CPU::conditionalReturn(bool condition)
+{
+    if (condition)
+        RET();
+    else
+        registers.PC++;
+}
+
+void CPU::RC() { conditionalReturn(conditionBits.testBits(CARRY_BIT)); }
+void CPU::RNC() { conditionalReturn(!conditionBits.testBits(CARRY_BIT)); }
+void CPU::RZ() { conditionalReturn(conditionBits.testBits(ZERO_BIT)); }
+void CPU::RNZ() { conditionalReturn(!conditionBits.testBits(ZERO_BIT)); }
+void CPU::RM() { conditionalReturn(conditionBits.testBits(SIGN_BIT)); }
+void CPU::RP() { conditionalReturn(!conditionBits.testBits(SIGN_BIT)); }
+void CPU::RPE() { conditionalReturn(conditionBits.testBits(PARITY_BIT)); }
+void CPU::RPO() { conditionalReturn(!conditionBits.testBits(PARITY_BIT)); }

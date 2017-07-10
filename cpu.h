@@ -263,6 +263,18 @@ public:
    void CP();
    void CPE();
    void CPO();
+
+   void RET();
+
+   void conditionalReturn(bool);
+   void RC();
+   void RNC();
+   void RZ();
+   void RNZ();
+   void RM();
+   void RP();
+   void RPE();
+   void RPO();
 };
 
 #endif // CPU_H
