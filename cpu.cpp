@@ -746,3 +746,20 @@ void CPU::CALL()
     memory[++registers.SP] = getLowBits(registers.PC);
     registers.PC = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
 }
+
+void CPU::conditionalCall(bool condition)
+{
+    if(condition)
+        CALL();
+    else
+        registers.PC += 3;
+}
+
+void CPU::CC() { conditionalCall(conditionBits.testBits(CARRY_BIT)); }
+void CPU::CNC() { conditionalCall(!conditionBits.testBits(CARRY_BIT)); }
+void CPU::CZ() { conditionalCall(conditionBits.testBits(ZERO_BIT)); }
+void CPU::CNZ() { conditionalCall(!conditionBits.testBits(ZERO_BIT)); }
+void CPU::CM() { conditionalCall(conditionBits.testBits(SIGN_BIT)); }
+void CPU::CP() { conditionalCall(!conditionBits.testBits(SIGN_BIT)); }
+void CPU::CPE() { conditionalCall(conditionBits.testBits(PARITY_BIT)); }
+void CPU::CPO() { conditionalCall(!conditionBits.testBits(PARITY_BIT)); }

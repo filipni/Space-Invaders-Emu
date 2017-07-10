@@ -1048,8 +1048,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=3;
           break;
       case 0xCB:
-          instruction = "*JMP a16";
-          cpu.registers.PC +=3;
+          cpu.JMP();
+          cycles = 10;
           break;
       case 0xCC:
           instruction = "CZ a16";
@@ -1120,8 +1120,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=3;
           break;
       case 0xDD:
-          instruction = "*CALL a16";
-          cpu.registers.PC +=3;
+          cpu.CALL();
+          cycles = 17;
           break;
       case 0xDE:
           instruction = "SBI d8";
@@ -1184,8 +1184,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=3;
           break;
       case 0xED:
-          instruction = "*CALL a16";
-          cpu.registers.PC +=3;
+          cpu.CALL();
+          cycles = 17;
           break;
       case 0xEE:
           instruction = "XRI d8";
@@ -1248,8 +1248,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=3;
           break;
       case 0xFD:
-          instruction = "*CALL a16";
-          cpu.registers.PC +=3;
+          cpu.CALL();
+          cycles = 17;
           break;
       case 0xFE:
           instruction = "CPI d8";

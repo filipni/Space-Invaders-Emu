@@ -253,6 +253,16 @@ public:
    void MVI_A();
 
    void CALL();
+
+   void conditionalCall(bool);
+   void CC();
+   void CNC();
+   void CZ();
+   void CNZ();
+   void CM();
+   void CP();
+   void CPE();
+   void CPO();
 };
 
 #endif // CPU_H
