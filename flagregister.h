@@ -17,6 +17,7 @@ public:
     FlagRegister();
     FlagRegister(uint8_t);
 
+    uint8_t getRegister();
     void setBits(uint8_t bitmask);
     void setBits(uint8_t bitmask, bool val);
     void clearBits(uint8_t bitmask);

@@ -31,7 +31,6 @@ void Emulator::run()
     while (running)
     {
         decode(cpu.memory[cpu.registers.PC]);
-
         if (cpu.registers.PC > 0x10)
             running = false;
     }
@@ -1264,4 +1263,5 @@ int Emulator::decode(uint8_t op)
           QString errorString = "Instruction not implemented: " + QString().sprintf("%02x", op);
           qFatal(errorString.toStdString().c_str());
       }
+      return cycles;
 }

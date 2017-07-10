@@ -26,25 +26,26 @@ public:
 
     CPU();
     struct dataRegisters {
-        int8_t A; // Accumulator
-        int8_t B;
-        int8_t C;
-        int8_t D;
-        int8_t E;
-        int8_t H;
-        int8_t L;
+        uint8_t A; // Accumulator
+        uint8_t B;
+        uint8_t C;
+        uint8_t D;
+        uint8_t E;
+        uint8_t H;
+        uint8_t L;
         uint8_t PC;
+        uint8_t SP;
     } registers;
 
-   int memory[MEMORY_SIZE];
+   uint8_t memory[MEMORY_SIZE];
 
-   int addBytes(int8_t, int8_t, bool, FlagRegister);
+   int addBytes(uint8_t, uint8_t, bool, FlagRegister);
    uint8_t getBit(uint8_t, uint8_t);
 
    void CMC();
    void STC();
 
-   void INR(int8_t&);
+   void INR(uint8_t&);
    void INR_A();
    void INR_B();
    void INR_C();
@@ -54,7 +55,7 @@ public:
    void INR_L();
    void INR_M();
 
-   void DCR(int8_t &reg);
+   void DCR(uint8_t &reg);
    void DCR_A();
    void DCR_B();
    void DCR_C();
@@ -136,7 +137,7 @@ public:
    void LDAX_B();
    void LDAX_D();
 
-   void ADD(int8_t);
+   void ADD(uint8_t);
    void ADD_B();
    void ADD_C();
    void ADD_D();
@@ -146,7 +147,7 @@ public:
    void ADD_M();
    void ADD_A();
 
-   void ADC(int8_t);
+   void ADC(uint8_t);
    void ADC_B();
    void ADC_C();
    void ADC_D();
@@ -156,7 +157,7 @@ public:
    void ADC_M();
    void ADC_A();
 
-   void SUB(int8_t);
+   void SUB(uint8_t);
    void SUB_B();
    void SUB_C();
    void SUB_D();
@@ -166,7 +167,7 @@ public:
    void SUB_M();
    void SUB_A();
 
-   void SBB(int8_t);
+   void SBB(uint8_t);
    void SBB_B();
    void SBB_C();
    void SBB_D();
@@ -176,7 +177,7 @@ public:
    void SBB_M();
    void SBB_A();
 
-   void ANA(int8_t);
+   void ANA(uint8_t);
    void ANA_B();
    void ANA_C();
    void ANA_D();
@@ -196,7 +197,7 @@ public:
    void XRA_M();
    void XRA_A();
 
-   void ORA(int8_t);
+   void ORA(uint8_t);
    void ORA_B();
    void ORA_C();
    void ORA_D();
@@ -206,7 +207,7 @@ public:
    void ORA_M();
    void ORA_A();
 
-   void CMP(int8_t);
+   void CMP(uint8_t);
    void CMP_B();
    void CMP_C();
    void CMP_D();
@@ -220,6 +221,11 @@ public:
    void RRC();
    void RAL();
    void RAR();
+
+   void PUSH_B();
+   void PUSH_D();
+   void PUSH_H();
+   void PUSH_PSW();
 };
 
 #endif // CPU_H

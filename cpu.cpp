@@ -6,7 +6,7 @@ CPU::CPU() : memory()
     memset(&registers, 0, sizeof(registers));
 }
 
-int CPU::addBytes(int8_t byte1, int8_t byte2, bool carryIn, FlagRegister flagsToCalc)
+int CPU::addBytes(uint8_t byte1, uint8_t byte2, bool carryIn, FlagRegister flagsToCalc)
 {
     uint8_t carry = carryIn ? conditionBits.testBits(CARRY_BIT) : 0;
 
@@ -49,7 +49,7 @@ void CPU::STC()
     conditionBits.setBits(CARRY_BIT);
 }
 
-void CPU::INR(int8_t &reg)
+void CPU::INR(uint8_t &reg)
 {
     FlagRegister flagsToCalc(SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT);
     reg = addBytes(reg, 1, false, flagsToCalc);
@@ -64,7 +64,7 @@ void CPU::INR_H() { INR(registers.H); }
 void CPU::INR_L() { INR(registers.L); }
 //void CPU::INR_M() { INR(registers.M); }
 
-void CPU::DCR(int8_t &reg)
+void CPU::DCR(uint8_t &reg)
 {
     reg = addBytes(reg, -1, false, SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT);
 }
@@ -434,7 +434,7 @@ void CPU::LDAX_D()
 }
 */
 
-void CPU::ADD(int8_t operand)
+void CPU::ADD(uint8_t operand)
 {
     FlagRegister flagsToCalc = CARRY_BIT | SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT;
     registers.A = addBytes(registers.A, operand, false, flagsToCalc);
@@ -449,7 +449,7 @@ void CPU::ADD_L() { ADD(registers.L); }
 // void CPU::ADD_M()
 void CPU::ADD_A() { ADD(registers.L); }
 
-void CPU::ADC(int8_t operand)
+void CPU::ADC(uint8_t operand)
 {
     FlagRegister flagsToCalc = CARRY_BIT | SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT;
     registers.A = addBytes(registers.A, operand, true, flagsToCalc);
@@ -464,7 +464,7 @@ void CPU::ADC_L() { ADC(registers.L); }
 // void CPU::ADC_M() {}
 void CPU::ADC_A() { ADC(registers.A); }
 
-void CPU::SUB(int8_t operand)
+void CPU::SUB(uint8_t operand)
 {
     FlagRegister flagsToCalc = CARRY_BIT | SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT;
     int8_t operand2Cmp = (operand ^ 0xFF) + 1;
@@ -481,7 +481,7 @@ void CPU::SUB_L() { SUB(registers.L); }
 // void CPU::SUB_M() {}
 void CPU::SUB_A() { SUB(registers.A); }
 
-void CPU::SBB(int8_t operand)
+void CPU::SBB(uint8_t operand)
 {
     FlagRegister flagsToCalc = CARRY_BIT | SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT;
     operand = operand + conditionBits.testBits(CARRY_BIT);
@@ -499,7 +499,7 @@ void CPU::SBB_L() { SBB(registers.L); }
 //void CPU::SBB_M() {}
 void CPU::SBB_A() { SBB(registers.A); }
 
-void CPU::ANA(int8_t operand)
+void CPU::ANA(uint8_t operand)
 {
     registers.A &= operand;
     conditionBits.setBits(CARRY_BIT, false);
@@ -531,7 +531,7 @@ void CPU::XRA_L() { XRA(registers.L); }
 // void CPU::XRA_M() { XRA(); }
 void CPU::XRA_A() { XRA(registers.A); }
 
-void CPU::ORA(int8_t operand)
+void CPU::ORA(uint8_t operand)
 {
     registers.A |= operand;
     conditionBits.setBits(CARRY_BIT, false);
@@ -547,7 +547,7 @@ void CPU::ORA_L() { ORA(registers.L); }
 // void CPU::ORA_M() { ORA(); }
 void CPU::ORA_A() { ORA(registers.A); }
 
-void CPU::CMP(int8_t reg)
+void CPU::CMP(uint8_t reg)
 {
     FlagRegister flagsToCalc(SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT);
     addBytes(registers.A, -reg, false, flagsToCalc);
@@ -595,3 +595,32 @@ void CPU::RAR()
     registers.A >>= 1;
     registers.A = registers.A | (oldCarry << 7);
 }
+
+void CPU::PUSH_B()
+{
+    memory[registers.SP-1] = registers.B;
+    memory[registers.SP-2] = registers.C;
+    registers.SP -= 2;
+}
+
+void CPU::PUSH_D()
+{
+    memory[registers.SP-1] = registers.D;
+    memory[registers.SP-2] = registers.E;
+    registers.SP -= 2;
+}
+
+void CPU::PUSH_H()
+{
+    memory[registers.SP-1] = registers.H;
+    memory[registers.SP-2] = registers.L;
+    registers.SP -= 2;
+}
+
+void CPU::PUSH_PSW()
+{
+    memory[registers.SP-1] = registers.A;
+    memory[registers.SP-2] = conditionBits.getRegister();
+    registers.SP -= 2;
+}
+

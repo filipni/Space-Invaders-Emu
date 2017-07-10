@@ -69,3 +69,8 @@ void FlagRegister::calculateZeroSignParityBits(uint8_t reg)
     calculateSignBit(reg);
     calculateEvenParityBit(reg);
 }
+
+uint8_t FlagRegister::getRegister()
+{
+    return conditionBits;
+}
