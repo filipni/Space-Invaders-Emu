@@ -624,3 +624,30 @@ void CPU::PUSH_PSW()
     registers.SP -= 2;
 }
 
+void CPU::POP_B()
+{
+    registers.C = memory[registers.SP];
+    registers.B = memory[registers.SP+1];
+    registers.SP += 2;
+}
+
+void CPU::POP_D()
+{
+    registers.E = memory[registers.SP];
+    registers.D = memory[registers.SP+1];
+    registers.SP += 2;
+}
+
+void CPU::POP_H()
+{
+    registers.L = memory[registers.SP];
+    registers.H = memory[registers.SP+1];
+    registers.SP += 2;
+}
+
+void CPU::POP_PSW()
+{
+    conditionBits = FlagRegister(memory[registers.SP]);
+    registers.A = memory[registers.SP+1];
+    registers.SP += 2;
+}

@@ -226,6 +226,11 @@ public:
    void PUSH_D();
    void PUSH_H();
    void PUSH_PSW();
+
+   void POP_B();
+   void POP_D();
+   void POP_H();
+   void POP_PSW();
 };
 
 #endif // CPU_H
