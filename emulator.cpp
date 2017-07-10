@@ -20,9 +20,20 @@ void Emulator::run()
        out << "Opened " + QString(ROM_FILE_PATH) << endl;
 
     QByteArray fileData = romFile.readAll();
-    for (int i = 0; i < fileData.size(); ++i)
+    Q_ASSERT(fileData.size() == ROM_SIZE);
+
+    for (int i = ROM_START; i < ROM_SIZE; ++i)
     {
-       decode(fileData.at(i));
+        cpu.memory[i] = fileData.at(i);
+    }
+
+    bool running = true;
+    while (running)
+    {
+        decode(cpu.memory[cpu.registers.PC]);
+
+        if (cpu.registers.PC > 0x10)
+            running = false;
     }
 }
 

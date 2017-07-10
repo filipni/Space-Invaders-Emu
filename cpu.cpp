@@ -1,6 +1,7 @@
 #include "cpu.h"
-
-CPU::CPU()
+#include <cstring>
+#include <QtGlobal>
+CPU::CPU() : memory()
 {
     memset(&registers, 0, sizeof(registers));
 }

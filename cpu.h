@@ -2,11 +2,22 @@
 #define CPU_H
 
 #include <stdint.h>
-#include <QBitArray>
-#include <flagregister.h>
+#include <cstring>
+#include "flagregister.h"
 
 const uint8_t HIGH_ORDER_BIT = 0x80;
 const uint8_t LOW_ORDER_BIT = 0x01;
+
+const int MEMORY_SIZE = 0x4000;
+
+const int ROM_START = 0x00;
+const int ROM_SIZE = 0x2000;
+
+const int WORK_RAM_START = 0x2000;
+const int WORK_RAM_SIZE = 0x400;
+
+const int VIDEO_RAM_START = 0x2400;
+const int VIDEO_RAM_SIZE = 0x1C00;
 
 class CPU
 {
@@ -24,6 +35,8 @@ public:
         int8_t L;
         uint8_t PC;
     } registers;
+
+   int memory[MEMORY_SIZE];
 
    int addBytes(int8_t, int8_t, bool, FlagRegister);
    uint8_t getBit(uint8_t, uint8_t);
