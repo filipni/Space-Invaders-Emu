@@ -31,7 +31,7 @@ void Emulator::run()
     while (running)
     {
         decode(cpu.memory[cpu.registers.PC]);
-        if (cpu.registers.PC > 0x10)
+        if (cpu.registers.PC > 0x2000)
             running = false;
     }
 }
@@ -59,21 +59,21 @@ int Emulator::decode(uint8_t op)
           break;
       case 0x03:
           cpu.INR_B();
-          cpu.registers.PC +=1;
+          cpu.registers.PC += 1;
           cycles = 5;
           break;
       case 0x04:
           cpu.INR_B();
-          cpu.registers.PC +=1;
+          cpu.registers.PC += 1;
           cycles = 5;
           break;
       case 0x05:
           cpu.DCR_B();
-          cpu.registers.PC +=1;
+          cpu.registers.PC += 1;
           cycles = 5;
           break;
       case 0x06:
-          //cpu.MVI_B();
+          cpu.MVI_B();
           cpu.registers.PC +=2;
           cycles = 7;
           break;
@@ -113,7 +113,7 @@ int Emulator::decode(uint8_t op)
           cycles = 5;
           break;
       case 0x0E:
-          //cpu.MVI_C();
+          cpu.MVI_C();
           cpu.registers.PC +=2;
           cycles = 7;
           break;
@@ -128,7 +128,7 @@ int Emulator::decode(uint8_t op)
           cycles = 4;
           break;
       case 0x11:
-          //cpu.LXI D();
+          cpu.LXI_D();
           cpu.registers.PC +=3;
           cycles = 10;
           break;
@@ -153,7 +153,7 @@ int Emulator::decode(uint8_t op)
           cycles = 5;
           break;
       case 0x16:
-          //cpu.MVI D();
+          cpu.MVI_D();
           cpu.registers.PC +=2;
           cycles = 7;
           break;
@@ -193,7 +193,7 @@ int Emulator::decode(uint8_t op)
           cycles = 5;
           break;
       case 0x1E:
-          //cpu.MVI();
+          cpu.MVI_C();
           cpu.registers.PC +=2;
           cycles = 7;
           break;
@@ -208,7 +208,7 @@ int Emulator::decode(uint8_t op)
           cycles = 4;
           break;
       case 0x21:
-          //cpu.LXI_H();
+          cpu.LXI_H();
           cpu.registers.PC +=3;
           cycles = 10;
           break;
@@ -233,7 +233,7 @@ int Emulator::decode(uint8_t op)
           cycles = 5;
           break;
       case 0x26:
-          //cpu.MVI_H();
+          cpu.MVI_H();
           cpu.registers.PC +=2;
           cycles = 7;
           break;
@@ -273,7 +273,7 @@ int Emulator::decode(uint8_t op)
           cycles = 5;
           break;
       case 0x2E:
-          //cpu.MVI_L();
+          cpu.MVI_L();
           cpu.registers.PC +=2;
           cycles = 7;
           break;
@@ -288,7 +288,7 @@ int Emulator::decode(uint8_t op)
           cycles = 4;
           break;
       case 0x31:
-          //cpu.LXI_SP();
+          cpu.LXI_SP();
           cpu.registers.PC +=3;
           cycles = 10;
           break;
@@ -313,7 +313,7 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0x36:
-          //cpu.MVI_M();
+          cpu.MVI_M();
           cpu.registers.PC +=2;
           cycles = 10;
           break;
@@ -353,7 +353,7 @@ int Emulator::decode(uint8_t op)
           cycles = 5;
           break;
       case 0x3E:
-          //cpu.MVI_A();
+          cpu.MVI_A();
           cpu.registers.PC +=2;
           cycles = 7;
           break;
@@ -1016,8 +1016,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=3;
           break;
       case 0xC3:
-          instruction = "JMP a16";
-          cpu.registers.PC +=3;
+          cpu.JMP();
+          cycles = 10;
           break;
       case 0xC4:
           instruction = "CNZ a16";
@@ -1056,8 +1056,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=3;
           break;
       case 0xCD:
-          instruction = "CALL a16";
-          cpu.registers.PC +=3;
+          cpu.CALL();
+          cycles = 17;
           break;
       case 0xCE:
           instruction = "ACI d8";

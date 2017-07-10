@@ -33,11 +33,15 @@ public:
         uint8_t E;
         uint8_t H;
         uint8_t L;
-        uint8_t PC;
-        uint8_t SP;
+        uint16_t PC;
+        uint16_t SP;
     } registers;
 
    uint8_t memory[MEMORY_SIZE];
+
+   uint8_t getHighBits(uint16_t);
+   uint8_t getLowBits(uint16_t);
+   uint16_t create16BitReg(uint8_t, uint8_t);
 
    int addBytes(uint8_t, uint8_t, bool, FlagRegister);
    uint8_t getBit(uint8_t, uint8_t);
@@ -231,6 +235,24 @@ public:
    void POP_D();
    void POP_H();
    void POP_PSW();
+
+   void JMP();
+
+   void LXI_B();
+   void LXI_D();
+   void LXI_H();
+   void LXI_SP();
+
+   void MVI_B();
+   void MVI_C();
+   void MVI_D();
+   void MVI_E();
+   void MVI_H();
+   void MVI_L();
+   void MVI_M();
+   void MVI_A();
+
+   void CALL();
 };
 
 #endif // CPU_H

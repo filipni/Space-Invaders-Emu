@@ -6,6 +6,21 @@ CPU::CPU() : memory()
     memset(&registers, 0, sizeof(registers));
 }
 
+uint8_t CPU::getHighBits(uint16_t reg)
+{
+   return (reg & 0xF0) >> 8;
+}
+
+uint8_t CPU::getLowBits(uint16_t reg)
+{
+   return reg & 0x0F;
+}
+
+uint16_t CPU::create16BitReg(uint8_t lowBits, uint8_t highBits)
+{
+    return (highBits << 8) + lowBits;
+}
+
 int CPU::addBytes(uint8_t byte1, uint8_t byte2, bool carryIn, FlagRegister flagsToCalc)
 {
     uint8_t carry = carryIn ? conditionBits.testBits(CARRY_BIT) : 0;
@@ -650,4 +665,84 @@ void CPU::POP_PSW()
     conditionBits = FlagRegister(memory[registers.SP]);
     registers.A = memory[registers.SP+1];
     registers.SP += 2;
+}
+
+void CPU::JMP()
+{
+    uint8_t lowBits = memory[registers.PC+1];
+    uint8_t highBits = memory[registers.PC+2];
+    registers.PC = (highBits << 8) + lowBits;
+}
+
+void CPU::LXI_B()
+{
+    registers.C = memory[registers.PC+1];
+    registers.B = memory[registers.PC+2];
+}
+
+void CPU::LXI_D()
+{
+    registers.E = memory[registers.PC+1];
+    registers.D = memory[registers.PC+2];
+}
+
+void CPU::LXI_H()
+{
+    registers.L = memory[registers.PC+1];
+    registers.H = memory[registers.PC+2];
+}
+
+void CPU::LXI_SP()
+{
+    uint8_t lowBits = memory[registers.PC+1];
+    uint8_t highBits = memory[registers.PC+2];
+    registers.SP = (highBits << 8) + lowBits;
+}
+
+void CPU::MVI_B()
+{
+    registers.B = memory[registers.PC+1];
+}
+
+void CPU::MVI_C()
+{
+    registers.C = memory[registers.PC+1];
+}
+
+void CPU::MVI_D()
+{
+    registers.D = memory[registers.PC+1];
+}
+
+void CPU::MVI_E()
+{
+    registers.E = memory[registers.PC+1];
+}
+
+void CPU::MVI_H()
+{
+    registers.H = memory[registers.PC+1];
+}
+
+void CPU::MVI_L()
+{
+    registers.L = memory[registers.PC+1];
+}
+
+void CPU::MVI_M()
+{
+    int destination = (registers.H << 8) + registers.L;
+    memory[destination] = memory[registers.PC+1];
+}
+
+void CPU::MVI_A()
+{
+    registers.A = memory[registers.PC+1];
+}
+
+void CPU::CALL()
+{
+    memory[++registers.SP] = getHighBits(registers.PC);
+    memory[++registers.SP] = getLowBits(registers.PC);
+    registers.PC = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
 }
