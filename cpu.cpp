@@ -5,7 +5,6 @@ CPU::CPU()
     memset(&registers, 0, sizeof(registers));
 }
 
-
 int CPU::addBytes(int8_t byte1, int8_t byte2, bool carryIn, FlagRegister flagsToCalc)
 {
     uint8_t carry = carryIn ? conditionBits.testBits(CARRY_BIT) : 0;
@@ -561,3 +560,37 @@ void CPU::CMP_H() { CMP(registers.H); }
 void CPU::CMP_L() { CMP(registers.L); }
 // void CPU::CMP_M() { CMP(); }
 void CPU::CMP_A() { CMP(registers.A); }
+
+void CPU::RLC()
+{
+    uint8_t carry = (registers.A & HIGH_ORDER_BIT) >> 7;
+    conditionBits.setBits(CARRY_BIT, carry);
+    registers.A <<= 1;
+    registers.A |= carry;
+}
+
+void CPU::RRC()
+{
+    uint8_t carry = registers.A & LOW_ORDER_BIT;
+    conditionBits.setBits(CARRY_BIT, carry);
+    registers.A >>= 1;
+    registers.A = registers.A | (carry << 7);
+}
+
+void CPU::RAL()
+{
+    uint8_t newCarry = (registers.A & HIGH_ORDER_BIT) >> 7;
+    uint8_t oldCarry = conditionBits.testBits(CARRY_BIT);
+    conditionBits.setBits(CARRY_BIT, newCarry);
+    registers.A <<= 1;
+    registers.A |= oldCarry;
+}
+
+void CPU::RAR()
+{
+    uint8_t newCarry = registers.A & LOW_ORDER_BIT;
+    uint8_t oldCarry = conditionBits.testBits(CARRY_BIT);
+    conditionBits.setBits(CARRY_BIT, newCarry);
+    registers.A >>= 1;
+    registers.A = registers.A | (oldCarry << 7);
+}

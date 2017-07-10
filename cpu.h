@@ -5,6 +5,9 @@
 #include <QBitArray>
 #include <flagregister.h>
 
+const uint8_t HIGH_ORDER_BIT = 0x80;
+const uint8_t LOW_ORDER_BIT = 0x01;
+
 class CPU
 {
 public:
@@ -23,6 +26,7 @@ public:
     } registers;
 
    int addBytes(int8_t, int8_t, bool, FlagRegister);
+   uint8_t getBit(uint8_t, uint8_t);
 
    void CMC();
    void STC();
@@ -198,6 +202,11 @@ public:
    void CMP_L();
    void CMP_M();
    void CMP_A();
+
+   void RLC();
+   void RRC();
+   void RAL();
+   void RAR();
 };
 
 #endif // CPU_H
