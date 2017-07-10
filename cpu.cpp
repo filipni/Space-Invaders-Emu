@@ -497,6 +497,7 @@ void CPU::SBB_E() { SBB(registers.E); }
 void CPU::SBB_H() { SBB(registers.H); }
 void CPU::SBB_L() { SBB(registers.L); }
 //void CPU::SBB_M() {}
+void CPU::SBB_A() { SBB(registers.A); }
 
 void CPU::ANA(int8_t operand)
 {

@@ -19,6 +19,7 @@ public:
         int8_t E;
         int8_t H;
         int8_t L;
+        uint8_t PC;
     } registers;
 
    int addBytes(int8_t, int8_t, bool, FlagRegister);
