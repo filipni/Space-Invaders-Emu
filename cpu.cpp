@@ -155,12 +155,11 @@ void CPU::MOV_B_L()
     registers.B = registers.L;
 }
 
-/*
 void CPU::MOV_B_M()
 {
-    registers.B =
+    int loadAddr = create16BitReg(registers.L, registers.H);
+    registers.B = memory[loadAddr];
 }
-*/
 
 void CPU::MOV_B_A()
 {
@@ -197,12 +196,11 @@ void CPU::MOV_C_L()
     registers.C = registers.L;
 }
 
-/*
 void CPU::MOV_C_M()
 {
-    registers.C =
+    int loadAddr = create16BitReg(registers.L, registers.H);
+    registers.C = memory[loadAddr];
 }
-*/
 
 void CPU::MOV_C_A()
 {
@@ -239,12 +237,11 @@ void CPU::MOV_D_L()
     registers.D = registers.L;
 }
 
-/*
 void CPU::MOV_D_M()
 {
-    registers.D =
+    int loadAddr = create16BitReg(registers.L, registers.H);
+    registers.D = memory[loadAddr];
 }
-*/
 
 void CPU::MOV_D_A()
 {
@@ -281,12 +278,11 @@ void CPU::MOV_E_L()
     registers.E = registers.L;
 }
 
-/*
 void CPU::MOV_E_M()
 {
-    registers.E =
+    int loadAddr = create16BitReg(registers.L, registers.H);
+    registers.E = memory[loadAddr];
 }
-*/
 
 void CPU::MOV_E_A()
 {
@@ -323,12 +319,11 @@ void CPU::MOV_H_L()
     registers.H = registers.L;
 }
 
-/*
 void CPU::MOV_H_M()
 {
-    registers.H = registers.E;
+    int loadAddr = create16BitReg(registers.L, registers.H);
+    registers.H = memory[loadAddr];
 }
-*/
 
 void CPU::MOV_H_A()
 {
@@ -365,23 +360,58 @@ void CPU::MOV_L_L()
     registers.L = registers.L;
 }
 
-/*
 void CPU::MOV_L_M()
 {
-    registers.L =
+    int loadAddr = create16BitReg(registers.L, registers.H);
+    registers.L = memory[loadAddr];
 }
-*/
 
 void CPU::MOV_L_A()
 {
     registers.L = registers.A;
 }
 
-/*
-void CPU::MOV_M()
+void CPU::MOV_M_B()
 {
+    int storeAddr = create16BitReg(registers.L, registers.H);
+    memory[storeAddr] = registers.B;
 }
-*/
+
+void CPU::MOV_M_C()
+{
+    int storeAddr = create16BitReg(registers.L, registers.H);
+    memory[storeAddr] = registers.C;
+}
+
+void CPU::MOV_M_D()
+{
+    int storeAddr = create16BitReg(registers.L, registers.H);
+    memory[storeAddr] = registers.D;
+}
+
+void CPU::MOV_M_E()
+{
+    int storeAddr = create16BitReg(registers.L, registers.H);
+    memory[storeAddr] = registers.E;
+}
+
+void CPU::MOV_M_H()
+{
+    int storeAddr = create16BitReg(registers.L, registers.H);
+    memory[storeAddr] = registers.H;
+}
+
+void CPU::MOV_M_L()
+{
+    int storeAddr = create16BitReg(registers.L, registers.H);
+    memory[storeAddr] = registers.L;
+}
+
+void CPU::MOV_M_A()
+{
+    int storeAddr = create16BitReg(registers.L, registers.H);
+    memory[storeAddr] = registers.L;
+}
 
 void CPU::MOV_A_B()
 {
@@ -413,12 +443,11 @@ void CPU::MOV_A_L()
     registers.A = registers.L;
 }
 
-/*
 void CPU::MOV_A_M()
 {
-    registers.A =
+    int loadAddr = create16BitReg(registers.L, registers.H);
+    registers.A = memory[loadAddr];
 }
-*/
 
 void CPU::MOV_A_A()
 {
@@ -811,4 +840,16 @@ void CPU::LHLD()
     uint16_t loadAddr = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
     registers.L = memory[loadAddr];
     registers.H = memory[loadAddr+1];
+}
+
+void CPU::LDAX_B()
+{
+    uint16_t loadAddr = create16BitReg(registers.C, registers.B);
+    registers.A = memory[loadAddr];
+}
+
+void CPU::LDAX_D()
+{
+    uint16_t loadAddr = create16BitReg(registers.E, registers.D);
+    registers.A = memory[loadAddr];
 }

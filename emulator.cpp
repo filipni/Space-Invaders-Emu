@@ -173,7 +173,7 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0x1A:
-          //cpu.LDAX_D();
+          cpu.LDAX_D();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
@@ -393,7 +393,7 @@ int Emulator::decode(uint8_t op)
           cycles = 5;
           break;
       case 0x46:
-          //cpu.MOV_B_M();
+          cpu.MOV_B_M();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
@@ -433,7 +433,7 @@ int Emulator::decode(uint8_t op)
           cycles = 5;
           break;
       case 0x4E:
-          //cpu.MOV_C_M();
+          cpu.MOV_C_M();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
@@ -473,7 +473,7 @@ int Emulator::decode(uint8_t op)
           cycles = 5;
           break;
       case 0x56:
-          //cpu.MOV_D_M();
+          cpu.MOV_D_M();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
@@ -513,7 +513,7 @@ int Emulator::decode(uint8_t op)
           cycles = 5;
           break;
       case 0x5E:
-          //cpu.MOV_E_M();
+          cpu.MOV_E_M();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
@@ -553,7 +553,7 @@ int Emulator::decode(uint8_t op)
           cycles = 5;
           break;
       case 0x66:
-          //cpu.MOV_H_M();
+          cpu.MOV_H_M();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
@@ -593,7 +593,7 @@ int Emulator::decode(uint8_t op)
           cycles = 5;
           break;
       case 0x6E:
-          //cpu.MOV_L_M();
+          cpu.MOV_L_M();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
@@ -603,32 +603,32 @@ int Emulator::decode(uint8_t op)
           cycles = 5;
           break;
       case 0x70:
-          //cpu.MOV_M_B();
+          cpu.MOV_M_B();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
       case 0x71:
-          //cpu.MOV_M_C();
+          cpu.MOV_M_C();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
       case 0x72:
-          //cpu.MOV_M_D();
+          cpu.MOV_M_D();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
       case 0x73:
-          //cpu.MOV_M_E();
+          cpu.MOV_M_E();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
       case 0x74:
-          //cpu.MOV_M_H();
+          cpu.MOV_M_H();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
       case 0x75:
-          //cpu.MOV_M_L();
+          cpu.MOV_M_L();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
@@ -638,7 +638,7 @@ int Emulator::decode(uint8_t op)
           cycles = 7;
           break;
       case 0x77:
-          //cpu.MOV_M_A();
+          cpu.MOV_M_A();
           cpu.registers.PC +=1;
           cycles = 7;
           break;

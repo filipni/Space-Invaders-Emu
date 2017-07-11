@@ -79,6 +79,7 @@ public:
    void MOV_B_E();
    void MOV_B_H();
    void MOV_B_L();
+   void MOV_B_M();
    void MOV_B_A();
 
    void MOV_C_B();
@@ -125,6 +126,14 @@ public:
    void MOV_L_L();
    void MOV_L_M();
    void MOV_L_A();
+
+   void MOV_M_B();
+   void MOV_M_C();
+   void MOV_M_D();
+   void MOV_M_E();
+   void MOV_M_H();
+   void MOV_M_L();
+   void MOV_M_A();
 
    void MOV_A_B();
    void MOV_A_C();
@@ -280,6 +289,7 @@ public:
    void STA();
    void SHLD();
    void LHLD();
+
 };
 
 #endif // CPU_H
