@@ -789,12 +789,26 @@ void CPU::RPO() { conditionalReturn(!conditionBits.testBits(PARITY_BIT)); }
 
 void CPU::LDA()
 {
-    uint16_t fromAddr = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
-    registers.A = memory[fromAddr];
+    uint16_t loadAddr = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
+    registers.A = memory[loadAddr];
 }
 
 void CPU::STA()
 {
-    uint16_t toAddr = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
-    memory[toAddr] = registers.A;
+    uint16_t storeAddr = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
+    memory[storeAddr] = registers.A;
+}
+
+void CPU::SHLD()
+{
+    uint16_t storeAddr = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
+    memory[storeAddr] = registers.L;
+    memory[storeAddr+1] = registers.H;
+}
+
+void CPU::LHLD()
+{
+    uint16_t loadAddr = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
+    registers.L = memory[loadAddr];
+    registers.H = memory[loadAddr+1];
 }

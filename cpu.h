@@ -278,6 +278,8 @@ public:
 
    void LDA();
    void STA();
+   void SHLD();
+   void LHLD();
 };
 
 #endif // CPU_H
