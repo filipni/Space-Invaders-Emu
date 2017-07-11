@@ -8,12 +8,12 @@ CPU::CPU() : memory()
 
 uint8_t CPU::getHighBits(uint16_t reg)
 {
-   return (reg & 0xF0) >> 8;
+   return (reg & 0xFF00) >> 8;
 }
 
 uint8_t CPU::getLowBits(uint16_t reg)
 {
-   return reg & 0x0F;
+   return reg & 0x00FF;
 }
 
 uint16_t CPU::create16BitReg(uint8_t lowBits, uint8_t highBits)
@@ -853,3 +853,52 @@ void CPU::LDAX_D()
     uint16_t loadAddr = create16BitReg(registers.E, registers.D);
     registers.A = memory[loadAddr];
 }
+
+void CPU::INX_B()
+{
+  uint16_t regBC = create16BitReg(registers.C, registers.B);
+  ++regBC;
+
+  registers.B = getHighBits(regBC);
+  registers.C = getLowBits(regBC);
+}
+
+void CPU::INX_D()
+{
+  uint16_t regDE = create16BitReg(registers.E, registers.D);
+  ++regDE;
+
+  registers.D = getHighBits(regDE);
+  registers.E = getLowBits(regDE);
+}
+
+void CPU::INX_H()
+{
+  uint16_t regHL = create16BitReg(registers.L, registers.H);
+  ++regHL;
+
+  registers.H = getHighBits(regHL);
+  registers.L = getLowBits(regHL);
+}
+
+void CPU::INX_SP()
+{
+  registers.SP++;
+}
+
+void CPU::conditionalJump(bool condition)
+{
+    if (condition)
+        JMP();
+    else
+        registers.PC += 3;
+}
+
+void CPU::JC() { conditionalJump(conditionBits.testBits(CARRY_BIT)); }
+void CPU::JNC() { conditionalJump(!conditionBits.testBits(CARRY_BIT)); }
+void CPU::JZ() { conditionalJump(conditionBits.testBits(ZERO_BIT)); }
+void CPU::JNZ() { conditionalJump(!conditionBits.testBits(ZERO_BIT)); }
+void CPU::JM() { conditionalJump(conditionBits.testBits(SIGN_BIT)); }
+void CPU::JP() { conditionalJump(!conditionBits.testBits(SIGN_BIT)); }
+void CPU::JPE() { conditionalJump(conditionBits.testBits(PARITY_BIT)); }
+void CPU::JPO() { conditionalJump(!conditionBits.testBits(PARITY_BIT)); }

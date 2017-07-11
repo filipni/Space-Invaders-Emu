@@ -33,6 +33,7 @@ void Emulator::run()
         decode(cpu.memory[cpu.registers.PC]);
         if (cpu.registers.PC > 0x2000)
             running = false;
+
     }
 }
 
@@ -48,7 +49,7 @@ int Emulator::decode(uint8_t op)
           cycles = 4;
           break;
       case 0x01:
-          //cpu.LXI_B();
+          cpu.LXI_B();
           cpu.registers.PC += 3;
           cycles = 10;
           break;
@@ -93,7 +94,7 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0x0A:
-          //cpu.LDAX_B();
+          cpu.LDAX_B();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
@@ -138,7 +139,7 @@ int Emulator::decode(uint8_t op)
           cycles = 7;
           break;
       case 0x13:
-          //cpu.INX D();
+          cpu.INX_D();
           cpu.registers.PC +=1;
           cycles = 5;
           break;
@@ -213,12 +214,12 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0x22:
-          //cpu.SHLD();
+          cpu.SHLD();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
       case 0x23:
-          //cpu.INX H();
+          cpu.INX_H();
           cpu.registers.PC +=1;
           cycles = 5;
           break;
@@ -1011,8 +1012,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=1;
           break;
       case 0xC2:
-          instruction = "JNZ a16";
-          cpu.registers.PC +=3;
+          cpu.JNZ();
+          cycles = 10;
           break;
       case 0xC3:
           cpu.JMP();
@@ -1044,8 +1045,8 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0xCA:
-          instruction = "JZ a16";
-          cpu.registers.PC +=3;
+          cpu.JZ();
+          cycles = 10;
           break;
       case 0xCB:
           cpu.JMP();
@@ -1077,8 +1078,8 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0xD2:
-          instruction = "JNC a16";
-          cpu.registers.PC +=3;
+          cpu.JNC();
+          cycles = 10;
           break;
       case 0xD3:
           instruction = "OUT d8";
@@ -1110,8 +1111,8 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0xDA:
-          instruction = "JC a16";
-          cpu.registers.PC +=3;
+          cpu.JC();
+          cycles = 10;
           break;
       case 0xDB:
           instruction = "IN d8";
@@ -1143,8 +1144,8 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0xE2:
-          instruction = "JPO a16";
-          cpu.registers.PC +=3;
+          cpu.JPO();
+          cycles = 10;
           break;
       case 0xE3:
           instruction = "XTHL";
@@ -1175,8 +1176,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=1;
           break;
       case 0xEA:
-          instruction = "JPE a16";
-          cpu.registers.PC +=3;
+          cpu.JPE();
+          cycles = 10;
           break;
       case 0xEB:
           instruction = "XCHG";
@@ -1208,8 +1209,8 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0xF2:
-          instruction = "JP a16";
-          cpu.registers.PC +=3;
+          cpu.JP();
+          cycles = 10;
           break;
       case 0xF3:
           instruction = "DI";
@@ -1241,8 +1242,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=1;
           break;
       case 0xFA:
-          instruction = "JM a16";
-          cpu.registers.PC +=3;
+          cpu.JM();
+          cycles = 10;
           break;
       case 0xFB:
           instruction = "EI";

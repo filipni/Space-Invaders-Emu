@@ -247,6 +247,16 @@ public:
 
    void JMP();
 
+   void conditionalJump(bool);
+   void JC();
+   void JNC();
+   void JZ();
+   void JNZ();
+   void JM();
+   void JP();
+   void JPE();
+   void JPO();
+
    void LXI_B();
    void LXI_D();
    void LXI_H();
@@ -289,6 +299,11 @@ public:
    void STA();
    void SHLD();
    void LHLD();
+
+   void INX_B();
+   void INX_D();
+   void INX_H();
+   void INX_SP();
 
 };
 
