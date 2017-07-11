@@ -4,6 +4,7 @@
 CPU::CPU() : memory()
 {
     memset(&registers, 0, sizeof(registers));
+    interruptsEnabled = false;
 }
 
 uint8_t CPU::getHighBits(uint16_t reg)
@@ -771,8 +772,11 @@ void CPU::MVI_A()
 
 void CPU::CALL()
 {
-    memory[++registers.SP] = getHighBits(registers.PC);
-    memory[++registers.SP] = getLowBits(registers.PC);
+    uint16_t returnPC = registers.PC + 3;
+    memory[registers.SP-1] = getHighBits(returnPC);
+    memory[registers.SP-2] = getLowBits(returnPC);
+    registers.SP -= 2;
+
     registers.PC = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
 }
 
@@ -902,3 +906,38 @@ void CPU::JM() { conditionalJump(conditionBits.testBits(SIGN_BIT)); }
 void CPU::JP() { conditionalJump(!conditionBits.testBits(SIGN_BIT)); }
 void CPU::JPE() { conditionalJump(conditionBits.testBits(PARITY_BIT)); }
 void CPU::JPO() { conditionalJump(!conditionBits.testBits(PARITY_BIT)); }
+
+void CPU::EI()
+{
+    interruptsEnabled = true;
+}
+
+void CPU::DI()
+{
+    interruptsEnabled = false;
+}
+
+void CPU::RST(uint8_t resetNr)
+{
+    Q_ASSERT(resetNr >= 0 && resetNr <= 7);
+
+    uint16_t returnPC = registers.PC + 1;
+    uint8_t lowPCBits = getLowBits(returnPC);
+    uint8_t highPCBits = getHighBits(returnPC);
+
+    memory[registers.SP-1] = highPCBits;
+    memory[registers.SP-2] = lowPCBits;
+    registers.SP -= 2;
+
+    uint16_t resetAddr = resetNr << 3;
+    registers.PC = resetAddr;
+}
+
+void CPU::RST_0() { RST(0); }
+void CPU::RST_1() { RST(1); }
+void CPU::RST_2() { RST(2); }
+void CPU::RST_3() { RST(3); }
+void CPU::RST_4() { RST(4); }
+void CPU::RST_5() { RST(5); }
+void CPU::RST_6() { RST(6); }
+void CPU::RST_7() { RST(7); }

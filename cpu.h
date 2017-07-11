@@ -37,6 +37,7 @@ public:
         uint16_t SP;
     } registers;
 
+   bool interruptsEnabled;
    uint8_t memory[MEMORY_SIZE];
 
    uint8_t getHighBits(uint16_t);
@@ -305,6 +306,18 @@ public:
    void INX_H();
    void INX_SP();
 
+   void EI();
+   void DI();
+
+   void RST(uint8_t);
+   void RST_0();
+   void RST_1();
+   void RST_2();
+   void RST_3();
+   void RST_4();
+   void RST_5();
+   void RST_6();
+   void RST_7();
 };
 
 #endif // CPU_H
