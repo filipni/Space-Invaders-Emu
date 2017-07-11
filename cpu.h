@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <cstring>
+#include <QDebug>
 #include "flagregister.h"
 
 const uint8_t HIGH_ORDER_BIT = 0x80;
@@ -38,6 +39,11 @@ public:
     } registers;
 
    bool interruptsEnabled;
+
+   uint8_t input1;
+   uint8_t input2;
+   uint8_t input3;
+
    uint8_t memory[MEMORY_SIZE];
 
    uint8_t getHighBits(uint16_t);
@@ -318,6 +324,8 @@ public:
    void RST_5();
    void RST_6();
    void RST_7();
+
+   void IN();
 };
 
 #endif // CPU_H

@@ -941,3 +941,23 @@ void CPU::RST_4() { RST(4); }
 void CPU::RST_5() { RST(5); }
 void CPU::RST_6() { RST(6); }
 void CPU::RST_7() { RST(7); }
+
+void CPU::IN()
+{
+    uint8_t inputNr = memory[registers.PC+1];
+
+    switch (inputNr)
+    {
+      case 1:
+        registers.A = input1;
+        break;
+      case 2:
+        registers.A = input2;
+        break;
+      case 3:
+        registers.A = input3;
+        break;
+      default:
+        qDebug() << "Inupt nr " << inputNr << " not implemented";
+    }
+}
