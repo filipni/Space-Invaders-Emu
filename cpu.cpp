@@ -411,7 +411,7 @@ void CPU::MOV_M_L()
 void CPU::MOV_M_A()
 {
     int storeAddr = create16BitReg(registers.L, registers.H);
-    memory[storeAddr] = registers.L;
+    memory[storeAddr] = registers.A;
 }
 
 void CPU::MOV_A_B()
