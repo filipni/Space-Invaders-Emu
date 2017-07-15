@@ -312,6 +312,11 @@ public:
    void INX_H();
    void INX_SP();
 
+   void DCX_B();
+   void DCX_D();
+   void DCX_H();
+   void DCX_SP();
+
    void EI();
    void DI();
 
@@ -326,6 +331,21 @@ public:
    void RST_7();
 
    void IN();
+
+   void DAD(uint8_t, uint8_t);
+   void DAD_B();
+   void DAD_D();
+   void DAD_H();
+   void DAD_SP();
+
+   void ADI();
+   void SUI();
+   void ANI();
+   void ORI();
+   void ACI();
+   void SBI();
+   void XRI();
+   void CPI();
 };
 
 #endif // CPU_H

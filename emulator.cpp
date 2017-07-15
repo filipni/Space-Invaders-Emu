@@ -79,7 +79,7 @@ int Emulator::decode(uint8_t op)
           cycles = 7;
           break;
       case 0x07:
-          //cpu.RLC();
+          cpu.RLC();
           cpu.registers.PC +=1;
           cycles = 4;
           break;
@@ -89,7 +89,7 @@ int Emulator::decode(uint8_t op)
           cycles = 4;
           break;
       case 0x09:
-          //cpu.DAD();
+          cpu.DAD_B();
           cpu.registers.PC +=1;
           cycles = 10;
           break;
@@ -99,7 +99,7 @@ int Emulator::decode(uint8_t op)
           cycles = 7;
           break;
       case 0x0B:
-          //cpu.DCX B();
+          cpu.DCX_B();
           cpu.registers.PC +=1;
           cycles = 5;
           break;
@@ -119,7 +119,7 @@ int Emulator::decode(uint8_t op)
           cycles = 7;
           break;
       case 0x0F:
-          //cpu.RRC();
+          cpu.RRC();
           cpu.registers.PC +=1;
           cycles = 4;
           break;
@@ -159,7 +159,7 @@ int Emulator::decode(uint8_t op)
           cycles = 7;
           break;
       case 0x17:
-          //cpu.RAL();
+          cpu.RAL();
           cpu.registers.PC +=1;
           cycles = 4;
           break;
@@ -169,7 +169,7 @@ int Emulator::decode(uint8_t op)
           cycles = 4;
           break;
       case 0x19:
-          //cpu.DAD_D();
+          cpu.DAD_D();
           cpu.registers.PC +=1;
           cycles = 10;
           break;
@@ -179,7 +179,7 @@ int Emulator::decode(uint8_t op)
           cycles = 7;
           break;
       case 0x1B:
-          //cpu.DCX_D();
+          cpu.DCX_D();
           cpu.registers.PC +=1;
           cycles = 5;
           break;
@@ -199,7 +199,7 @@ int Emulator::decode(uint8_t op)
           cycles = 7;
           break;
       case 0x1F:
-          //cpu.RAR();
+          cpu.RAR();
           cpu.registers.PC +=1;
           cycles = 4;
           break;
@@ -239,7 +239,7 @@ int Emulator::decode(uint8_t op)
           cycles = 7;
           break;
       case 0x27:
-          //cpu.DAA();
+          cpu.DAA();
           cpu.registers.PC +=1;
           cycles = 4;
           break;
@@ -249,17 +249,17 @@ int Emulator::decode(uint8_t op)
           cycles = 4;
           break;
       case 0x29:
-          //cpu.DAD_H();
+          cpu.DAD_H();
           cpu.registers.PC +=1;
           cycles = 10;
           break;
       case 0x2A:
-          //cpu.LHLD();
+          cpu.LHLD();
           cpu.registers.PC +=3;
           cycles = 16;
           break;
       case 0x2B:
-          //cpu.DCX_H();
+          cpu.DCX_H();
           cpu.registers.PC +=1;
           cycles = 5;
           break;
@@ -294,12 +294,12 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0x32:
-          //cpu.STA();
+          cpu.STA();
           cpu.registers.PC +=1;
           cycles = 13;
           break;
       case 0x33:
-          //cpu.INX_SP();
+          cpu.INX_SP();
           cpu.registers.PC +=1;
           cycles = 5;
           break;
@@ -329,7 +329,7 @@ int Emulator::decode(uint8_t op)
           cycles = 4;
           break;
       case 0x39:
-          //cpu.DAD_SP();
+          cpu.DAD_SP();
           cpu.registers.PC +=1;
           cycles = 10;
           break;
@@ -339,7 +339,7 @@ int Emulator::decode(uint8_t op)
           cycles = 13;
           break;
       case 0x3B:
-          //cpu.DCX_SP();
+          cpu.DCX_SP();
           cpu.registers.PC +=1;
           cycles = 5;
           break;
@@ -1029,7 +1029,7 @@ int Emulator::decode(uint8_t op)
           cycles = 11;
           break;
       case 0xC6:
-          instruction = "ADI d8";
+          cpu.ADI();
           cpu.registers.PC +=2;
           break;
       case 0xC7:
@@ -1061,7 +1061,7 @@ int Emulator::decode(uint8_t op)
           cycles = 17;
           break;
       case 0xCE:
-          instruction = "ACI d8";
+          cpu.ACI();
           cpu.registers.PC +=2;
           break;
       case 0xCF:
@@ -1095,7 +1095,7 @@ int Emulator::decode(uint8_t op)
           cycles = 11;
           break;
       case 0xD6:
-          instruction = "SUI d8";
+          cpu.SUI();
           cpu.registers.PC +=2;
           break;
       case 0xD7:
@@ -1115,7 +1115,7 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0xDB:
-          instruction = "IN d8";
+          //cpu.IN();
           cpu.registers.PC +=2;
           break;
       case 0xDC:
@@ -1127,7 +1127,7 @@ int Emulator::decode(uint8_t op)
           cycles = 17;
           break;
       case 0xDE:
-          instruction = "SBI d8";
+          cpu.SBI d8;
           cpu.registers.PC +=2;
           break;
       case 0xDF:
@@ -1160,7 +1160,7 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=1;
           break;
       case 0xE6:
-          instruction = "ANI d8";
+          cpu.ANI();
           cpu.registers.PC +=2;
           break;
       case 0xE7:
@@ -1192,7 +1192,7 @@ int Emulator::decode(uint8_t op)
           cycles = 17;
           break;
       case 0xEE:
-          instruction = "XRI d8";
+          cpu.XRI();
           cpu.registers.PC +=2;
           break;
       case 0xEF:
@@ -1213,7 +1213,7 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0xF3:
-          instruction = "DI";
+          cpu.DI();
           cpu.registers.PC +=1;
           break;
       case 0xF4:
@@ -1226,7 +1226,7 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0xF6:
-          instruction = "ORI d8";
+          cpu.ORI();
           cpu.registers.PC +=2;
           break;
       case 0xF7:
@@ -1246,7 +1246,7 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0xFB:
-          instruction = "EI";
+          cpu.EI();
           cpu.registers.PC +=1;
           break;
       case 0xFC:
@@ -1258,7 +1258,7 @@ int Emulator::decode(uint8_t op)
           cycles = 17;
           break;
       case 0xFE:
-          instruction = "CPI d8";
+          cpu.CPI();
           cpu.registers.PC +=2;
           break;
       case 0xFF:

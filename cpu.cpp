@@ -455,30 +455,6 @@ void CPU::MOV_A_A()
     registers.A = registers.A;
 }
 
-/*
-void CPU::STAX_B()
-{
-
-}
-
-void CPU::STAX_D()
-{
-
-}
-*/
-
-/*
-void CPU::LDAX_B()
-{
-
-}
-
-void CPU::LDAX_D()
-{
-
-}
-*/
-
 void CPU::ADD(uint8_t operand)
 {
     FlagRegister flagsToCalc = CARRY_BIT | SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT;
@@ -890,6 +866,38 @@ void CPU::INX_SP()
   registers.SP++;
 }
 
+void CPU::DCX_B()
+{
+  uint16_t regBC = create16BitReg(registers.C, registers.B);
+  --regBC;
+
+  registers.B = getHighBits(regBC);
+  registers.C = getLowBits(regBC);
+}
+
+void CPU::DCX_D()
+{
+  uint16_t regDE = create16BitReg(registers.E, registers.D);
+  --regDE;
+
+  registers.D = getHighBits(regDE);
+  registers.E = getLowBits(regDE);
+}
+
+void CPU::DCX_H()
+{
+  uint16_t regHL = create16BitReg(registers.L, registers.H);
+  --regHL;
+
+  registers.H = getHighBits(regHL);
+  registers.L = getLowBits(regHL);
+}
+
+void CPU::DCX_SP()
+{
+  registers.SP--;
+}
+
 void CPU::conditionalJump(bool condition)
 {
     if (condition)
@@ -960,4 +968,54 @@ void CPU::IN()
       default:
         qDebug() << "Inupt nr " << inputNr << " not implemented";
     }
+}
+
+void CPU::ADI() { ADD(memory[registers.PC+1]); }
+void CPU::SUI() { SUB(memory[registers.PC+1]); }
+void CPU::ANI() { ANA(memory[registers.PC+1]); }
+void CPU::ORI() { ORA(memory[registers.PC+1]); }
+void CPU::ACI() { ADC(memory[registers.PC+1]); }
+void CPU::SBI() { SBB(memory[registers.PC+1]); }
+void CPU::XRI() { XRA(memory[registers.PC+1]); }
+void CPU::CPI() { CMP(memory[registers.PC+1]); }
+
+void CPU::DAD(uint8_t highReg, uint8_t lowReg)
+{
+    uint16_t operandReg = create16BitReg(lowReg, highReg);
+    uint16_t regHL = create16BitReg(registers.L, registers.H);
+    int32_t result = operandReg + regHL;
+
+    if (result & 0x100)
+        conditionBits.setBits(CARRY_BIT);
+
+    registers.H = getHighBits( (uint16_t) result);
+    registers.L = getLowBits( (uint16_t) result);
+}
+
+void CPU::DAD_SP()
+{
+    uint16_t regHL = create16BitReg(registers.L, registers.H);
+    int32_t result = registers.SP + regHL;
+
+    if (result & 0x100)
+        conditionBits.setBits(CARRY_BIT);
+
+    registers.H = getHighBits( (uint16_t) result);
+    registers.L = getLowBits( (uint16_t) result);
+}
+
+void CPU::DAD_B() { DAD(registers.B, registers.C); }
+void CPU::DAD_D() { DAD(registers.D, registers.E); }
+void CPU::DAD_H() { DAD(registers.H, registers.L); }
+
+void CPU::STAX_B()
+{
+    uint16_t toAddr = create16BitReg(registers.C, registers.B);
+    memory[toAddr] = registers.A;
+}
+
+void CPU::STAX_D()
+{
+    uint16_t toAddr = create16BitReg(registers.E, registers.D);
+    memory[toAddr] = registers.A;
 }
