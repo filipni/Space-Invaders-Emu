@@ -1036,3 +1036,20 @@ void CPU::XCHG()
    registers.H = getHighBits(regDE);
    registers.L = getLowBits(regDE);
 }
+
+void CPU::XTHL()
+{
+    uint8_t regH = registers.H;
+    uint8_t regL = registers.L;
+
+    registers.L = memory[registers.PC];
+    registers.H = memory[registers.PC+1];
+
+    memory[registers.PC] = regL;
+    memory[registers.PC+1] = regH;
+}
+
+void CPU::SPHL()
+{
+    registers.SP = create16BitReg(registers.L, registers.H);
+}

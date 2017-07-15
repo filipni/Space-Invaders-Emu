@@ -349,6 +349,8 @@ public:
 
    void PCHL();
    void XCHG();
+   void XTHL();
+   void SPHL();
 };
 
 #endif // CPU_H

@@ -1148,7 +1148,7 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0xE3:
-          instruction = "XTHL";
+          cpu.XTHL();
           cpu.registers.PC +=1;
           break;
       case 0xE4:
@@ -1172,7 +1172,7 @@ int Emulator::decode(uint8_t op)
           cycles = 11 / 5;
           break;
       case 0xE9:
-          instruction = "PCHL";
+          cpu.PCHL();
           cpu.registers.PC +=1;
           break;
       case 0xEA:
@@ -1180,7 +1180,7 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0xEB:
-          instruction = "XCHG";
+          cpu.XCHG();
           cpu.registers.PC +=1;
           break;
       case 0xEC:
@@ -1238,7 +1238,7 @@ int Emulator::decode(uint8_t op)
           cycles = 11 / 5;
           break;
       case 0xF9:
-          instruction = "SPHL";
+          cpu.SPHL();
           cpu.registers.PC +=1;
           break;
       case 0xFA:
