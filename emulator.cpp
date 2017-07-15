@@ -295,7 +295,7 @@ int Emulator::decode(uint8_t op)
           break;
       case 0x32:
           cpu.STA();
-          cpu.registers.PC +=1;
+          cpu.registers.PC +=3;
           cycles = 13;
           break;
       case 0x33:

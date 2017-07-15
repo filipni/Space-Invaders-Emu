@@ -675,93 +675,93 @@ void CPU::POP_PSW()
 
 void CPU::JMP()
 {
-    uint8_t lowBits = memory[registers.PC+1];
-    uint8_t highBits = memory[registers.PC+2];
-    registers.PC = (highBits << 8) + lowBits;
+  uint8_t lowBits = memory[registers.PC+1];
+  uint8_t highBits = memory[registers.PC+2];
+  registers.PC = (highBits << 8) + lowBits;
 }
 
 void CPU::LXI_B()
 {
-    registers.C = memory[registers.PC+1];
-    registers.B = memory[registers.PC+2];
+  registers.C = memory[registers.PC+1];
+  registers.B = memory[registers.PC+2];
 }
 
 void CPU::LXI_D()
 {
-    registers.E = memory[registers.PC+1];
-    registers.D = memory[registers.PC+2];
+  registers.E = memory[registers.PC+1];
+  registers.D = memory[registers.PC+2];
 }
 
 void CPU::LXI_H()
 {
-    registers.L = memory[registers.PC+1];
-    registers.H = memory[registers.PC+2];
+  registers.L = memory[registers.PC+1];
+  registers.H = memory[registers.PC+2];
 }
 
 void CPU::LXI_SP()
 {
-    uint8_t lowBits = memory[registers.PC+1];
-    uint8_t highBits = memory[registers.PC+2];
-    registers.SP = (highBits << 8) + lowBits;
+  uint8_t lowBits = memory[registers.PC+1];
+  uint8_t highBits = memory[registers.PC+2];
+  registers.SP = (highBits << 8) + lowBits;
 }
 
 void CPU::MVI_B()
 {
-    registers.B = memory[registers.PC+1];
+  registers.B = memory[registers.PC+1];
 }
 
 void CPU::MVI_C()
 {
-    registers.C = memory[registers.PC+1];
+  registers.C = memory[registers.PC+1];
 }
 
 void CPU::MVI_D()
 {
-    registers.D = memory[registers.PC+1];
+  registers.D = memory[registers.PC+1];
 }
 
 void CPU::MVI_E()
 {
-    registers.E = memory[registers.PC+1];
+  registers.E = memory[registers.PC+1];
 }
 
 void CPU::MVI_H()
 {
-    registers.H = memory[registers.PC+1];
+  registers.H = memory[registers.PC+1];
 }
 
 void CPU::MVI_L()
 {
-    registers.L = memory[registers.PC+1];
+  registers.L = memory[registers.PC+1];
 }
 
 void CPU::MVI_M()
 {
-    int destination = (registers.H << 8) + registers.L;
-    memory[destination] = memory[registers.PC+1];
+  int destination = (registers.H << 8) + registers.L;
+  memory[destination] = memory[registers.PC+1];
 }
 
 void CPU::MVI_A()
 {
-    registers.A = memory[registers.PC+1];
+  registers.A = memory[registers.PC+1];
 }
 
 void CPU::CALL()
 {
-    uint16_t returnPC = registers.PC + 3;
-    memory[registers.SP-1] = getHighBits(returnPC);
-    memory[registers.SP-2] = getLowBits(returnPC);
-    registers.SP -= 2;
+  uint16_t returnPC = registers.PC + 3;
+  memory[registers.SP-1] = getHighBits(returnPC);
+  memory[registers.SP-2] = getLowBits(returnPC);
+  registers.SP -= 2;
 
-    registers.PC = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
+  registers.PC = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
 }
 
 void CPU::conditionalCall(bool condition)
 {
-    if(condition)
-        CALL();
-    else
-        registers.PC += 3;
+  if(condition)
+      CALL();
+  else
+      registers.PC += 3;
 }
 
 void CPU::CC() { conditionalCall(conditionBits.testBits(CARRY_BIT)); }
@@ -775,16 +775,16 @@ void CPU::CPO() { conditionalCall(!conditionBits.testBits(PARITY_BIT)); }
 
 void CPU::RET()
 {
-    registers.PC = create16BitReg(memory[registers.SP], memory[registers.SP+1]);
-    registers.SP += 2;
+  registers.PC = create16BitReg(memory[registers.SP], memory[registers.SP+1]);
+  registers.SP += 2;
 }
 
 void CPU::conditionalReturn(bool condition)
 {
-    if (condition)
-        RET();
-    else
-        registers.PC++;
+  if (condition)
+      RET();
+  else
+      registers.PC++;
 }
 
 void CPU::RC() { conditionalReturn(conditionBits.testBits(CARRY_BIT)); }
@@ -798,112 +798,112 @@ void CPU::RPO() { conditionalReturn(!conditionBits.testBits(PARITY_BIT)); }
 
 void CPU::LDA()
 {
-    uint16_t loadAddr = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
-    registers.A = memory[loadAddr];
+  uint16_t loadAddr = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
+  registers.A = memory[loadAddr];
 }
 
 void CPU::STA()
 {
-    uint16_t storeAddr = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
-    memory[storeAddr] = registers.A;
+  uint16_t storeAddr = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
+  memory[storeAddr] = registers.A;
 }
 
 void CPU::SHLD()
 {
-    uint16_t storeAddr = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
-    memory[storeAddr] = registers.L;
-    memory[storeAddr+1] = registers.H;
+  uint16_t storeAddr = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
+  memory[storeAddr] = registers.L;
+  memory[storeAddr+1] = registers.H;
 }
 
 void CPU::LHLD()
 {
-    uint16_t loadAddr = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
-    registers.L = memory[loadAddr];
-    registers.H = memory[loadAddr+1];
+  uint16_t loadAddr = create16BitReg(memory[registers.PC+1], memory[registers.PC+2]);
+  registers.L = memory[loadAddr];
+  registers.H = memory[loadAddr+1];
 }
 
 void CPU::LDAX_B()
 {
-    uint16_t loadAddr = create16BitReg(registers.C, registers.B);
-    registers.A = memory[loadAddr];
+  uint16_t loadAddr = create16BitReg(registers.C, registers.B);
+  registers.A = memory[loadAddr];
 }
 
 void CPU::LDAX_D()
 {
-    uint16_t loadAddr = create16BitReg(registers.E, registers.D);
-    registers.A = memory[loadAddr];
+  uint16_t loadAddr = create16BitReg(registers.E, registers.D);
+  registers.A = memory[loadAddr];
 }
 
 void CPU::INX_B()
 {
-  uint16_t regBC = create16BitReg(registers.C, registers.B);
-  ++regBC;
+uint16_t regBC = create16BitReg(registers.C, registers.B);
+++regBC;
 
-  registers.B = getHighBits(regBC);
-  registers.C = getLowBits(regBC);
+registers.B = getHighBits(regBC);
+registers.C = getLowBits(regBC);
 }
 
 void CPU::INX_D()
 {
-  uint16_t regDE = create16BitReg(registers.E, registers.D);
-  ++regDE;
+uint16_t regDE = create16BitReg(registers.E, registers.D);
+++regDE;
 
-  registers.D = getHighBits(regDE);
-  registers.E = getLowBits(regDE);
+registers.D = getHighBits(regDE);
+registers.E = getLowBits(regDE);
 }
 
 void CPU::INX_H()
 {
-  uint16_t regHL = create16BitReg(registers.L, registers.H);
-  ++regHL;
+uint16_t regHL = create16BitReg(registers.L, registers.H);
+++regHL;
 
-  registers.H = getHighBits(regHL);
-  registers.L = getLowBits(regHL);
+registers.H = getHighBits(regHL);
+registers.L = getLowBits(regHL);
 }
 
 void CPU::INX_SP()
 {
-  registers.SP++;
+registers.SP++;
 }
 
 void CPU::DCX_B()
 {
-  uint16_t regBC = create16BitReg(registers.C, registers.B);
-  --regBC;
+uint16_t regBC = create16BitReg(registers.C, registers.B);
+--regBC;
 
-  registers.B = getHighBits(regBC);
-  registers.C = getLowBits(regBC);
+registers.B = getHighBits(regBC);
+registers.C = getLowBits(regBC);
 }
 
 void CPU::DCX_D()
 {
-  uint16_t regDE = create16BitReg(registers.E, registers.D);
-  --regDE;
+uint16_t regDE = create16BitReg(registers.E, registers.D);
+--regDE;
 
-  registers.D = getHighBits(regDE);
-  registers.E = getLowBits(regDE);
+registers.D = getHighBits(regDE);
+registers.E = getLowBits(regDE);
 }
 
 void CPU::DCX_H()
 {
-  uint16_t regHL = create16BitReg(registers.L, registers.H);
-  --regHL;
+uint16_t regHL = create16BitReg(registers.L, registers.H);
+--regHL;
 
-  registers.H = getHighBits(regHL);
-  registers.L = getLowBits(regHL);
+registers.H = getHighBits(regHL);
+registers.L = getLowBits(regHL);
 }
 
 void CPU::DCX_SP()
 {
-  registers.SP--;
+registers.SP--;
 }
 
 void CPU::conditionalJump(bool condition)
 {
-    if (condition)
-        JMP();
-    else
-        registers.PC += 3;
+  if (condition)
+      JMP();
+  else
+      registers.PC += 3;
 }
 
 void CPU::JC() { conditionalJump(conditionBits.testBits(CARRY_BIT)); }
