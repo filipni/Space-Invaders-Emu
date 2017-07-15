@@ -54,7 +54,7 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0x02:
-          //cpu.STAX_B();
+          cpu.STAX_B();
           cpu.registers.PC += 1;
           cycles = 7;
           break;
@@ -134,7 +134,7 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0x12:
-          //cpu.STAX_D();
+          cpu.STAX_D();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
@@ -304,12 +304,12 @@ int Emulator::decode(uint8_t op)
           cycles = 5;
           break;
       case 0x34:
-          //cpu.INR_M();
+          cpu.INR_M();
           cpu.registers.PC +=1;
           cycles = 10;
           break;
       case 0x35:
-          //cpu.DCR_M();
+          cpu.DCR_M();
           cpu.registers.PC +=1;
           cycles = 10;
           break;
@@ -319,7 +319,7 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0x37:
-          //cpu.STC();
+          cpu.STC();
           cpu.registers.PC +=1;
           cycles = 4;
           break;
@@ -334,7 +334,7 @@ int Emulator::decode(uint8_t op)
           cycles = 10;
           break;
       case 0x3A:
-          //cpu.LDA();
+          cpu.LDA();
           cpu.registers.PC +=3;
           cycles = 13;
           break;
@@ -674,7 +674,7 @@ int Emulator::decode(uint8_t op)
           cycles = 5;
           break;
       case 0x7E:
-          //cpu.MOV_L_M();
+          cpu.MOV_L_M();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
@@ -714,7 +714,7 @@ int Emulator::decode(uint8_t op)
           cycles = 4;
           break;
       case 0x86:
-          //cpu.ADD_M();
+          cpu.ADD_M();
           cpu.registers.PC +=1;
           cycles = 4;
           break;
@@ -754,7 +754,7 @@ int Emulator::decode(uint8_t op)
           cycles = 4;
           break;
       case 0x8E:
-          //cpu.ADC_M();
+          cpu.ADC_M();
           cpu.registers.PC +=1;
           cycles = 4;
           break;
@@ -794,7 +794,7 @@ int Emulator::decode(uint8_t op)
           cycles = 4;
           break;
       case 0x96:
-          //cpu.SUB_M();
+          cpu.SUB_M();
           cpu.registers.PC +=1;
           cycles = 4;
           break;
@@ -834,7 +834,7 @@ int Emulator::decode(uint8_t op)
           cycles = 4;
           break;
       case 0x9E:
-          //cpu.SBB_M();
+          cpu.SBB_M();
           cpu.registers.PC +=1;
           cycles = 4;
           break;
@@ -875,7 +875,7 @@ int Emulator::decode(uint8_t op)
           cycles = 4;
           break;
       case 0xA6:
-          //cpu.ANA_M();
+          cpu.ANA_M();
           cpu.registers.PC +=1;
           cycles = 4;
           break;
@@ -915,7 +915,7 @@ int Emulator::decode(uint8_t op)
           cycles = 4;
           break;
       case 0xAE:
-          //cpu.XRA_M();
+          cpu.XRA_M();
           cpu.registers.PC +=1;
           cycles = 4;
           break;
@@ -955,7 +955,7 @@ int Emulator::decode(uint8_t op)
           cycles = 4;
           break;
       case 0xB6:
-          //cpu.ORA_M();
+          cpu.ORA_M();
           cpu.registers.PC +=1;
           cycles = 4;
           break;
@@ -995,7 +995,7 @@ int Emulator::decode(uint8_t op)
           cycles = 4;
           break;
       case 0xBE:
-          //cpu.CMP_M();
+          cpu.CMP_M();
           cpu.registers.PC +=1;
           cycles = 4;
           break;
@@ -1033,8 +1033,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=2;
           break;
       case 0xC7:
-          instruction = "RST 0";
-          cpu.registers.PC +=1;
+          cpu.RST_0();
+          cycles = 11;
           break;
       case 0xC8:
           cpu.RZ();
@@ -1065,8 +1065,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=2;
           break;
       case 0xCF:
-          instruction = "RST 1";
-          cpu.registers.PC +=1;
+          cpu.RST_1();
+          cycles = 11;
           break;
       case 0xD0:
           cpu.RNC();
@@ -1099,8 +1099,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=2;
           break;
       case 0xD7:
-          instruction = "RST 2";
-          cpu.registers.PC +=1;
+          cpu.RST_2();
+          cycles = 11;
           break;
       case 0xD8:
           cpu.RC();
@@ -1127,12 +1127,12 @@ int Emulator::decode(uint8_t op)
           cycles = 17;
           break;
       case 0xDE:
-          cpu.SBI d8;
+          cpu.SBI();
           cpu.registers.PC +=2;
           break;
       case 0xDF:
-          instruction = "RST 3";
-          cpu.registers.PC +=1;
+          cpu.RST_3();
+          cycles = 11;
           break;
       case 0xE0:
           cpu.RPO();
@@ -1164,8 +1164,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=2;
           break;
       case 0xE7:
-          instruction = "RST 4";
-          cpu.registers.PC +=1;
+          cpu.RST_4();
+          cycles = 11;
           break;
       case 0xE8:
           cpu.RPE();
@@ -1196,8 +1196,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=2;
           break;
       case 0xEF:
-          instruction = "RST 5";
-          cpu.registers.PC +=1;
+          cpu.RST_5();
+          cycles = 11;
           break;
       case 0xF0:
           cpu.RP();
@@ -1230,8 +1230,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=2;
           break;
       case 0xF7:
-          instruction = "RST 6";
-          cpu.registers.PC +=1;
+          cpu.RST_6();
+          cycles = 11;
           break;
       case 0xF8:
           cpu.RM();
@@ -1262,8 +1262,8 @@ int Emulator::decode(uint8_t op)
           cpu.registers.PC +=2;
           break;
       case 0xFF:
-          instruction = "RST 7";
-          cpu.registers.PC +=1;
+          cpu.RST_7();
+          cycles = 11;
           break;
       default:
           QString errorString = "Instruction not implemented: " + QString().sprintf("%02x", op);

@@ -78,7 +78,7 @@ void CPU::INR_D() { INR(registers.D); }
 void CPU::INR_E() { INR(registers.E); }
 void CPU::INR_H() { INR(registers.H); }
 void CPU::INR_L() { INR(registers.L); }
-//void CPU::INR_M() { INR(registers.M); }
+void CPU::INR_M() { INR(memory[create16BitReg(registers.L, registers.H)]); }
 
 void CPU::DCR(uint8_t &reg)
 {
@@ -92,7 +92,7 @@ void CPU::DCR_D() { DCR(registers.D); }
 void CPU::DCR_E() { DCR(registers.E); }
 void CPU::DCR_H() { DCR(registers.H); }
 void CPU::DCR_L() { DCR(registers.L); }
-//void CPU::DCR_M() { DCR(registers.M); }
+void CPU::DCR_M() { DCR(memory[create16BitReg(registers.L, registers.H)]); }
 
 void CPU::CMA()
 {
@@ -467,7 +467,7 @@ void CPU::ADD_D() { ADD(registers.D); }
 void CPU::ADD_E() { ADD(registers.E); }
 void CPU::ADD_H() { ADD(registers.H); }
 void CPU::ADD_L() { ADD(registers.L); }
-// void CPU::ADD_M()
+void CPU::ADD_M() { ADD(memory[create16BitReg(registers.L, registers.H)]); }
 void CPU::ADD_A() { ADD(registers.L); }
 
 void CPU::ADC(uint8_t operand)
@@ -482,7 +482,7 @@ void CPU::ADC_D() { ADC(registers.D); }
 void CPU::ADC_E() { ADC(registers.E); }
 void CPU::ADC_H() { ADC(registers.H); }
 void CPU::ADC_L() { ADC(registers.L); }
-// void CPU::ADC_M() {}
+void CPU::ADC_M() { ADC(memory[create16BitReg(registers.L, registers.H)]); }
 void CPU::ADC_A() { ADC(registers.A); }
 
 void CPU::SUB(uint8_t operand)
@@ -499,7 +499,7 @@ void CPU::SUB_D() { SUB(registers.D); }
 void CPU::SUB_E() { SUB(registers.E); }
 void CPU::SUB_H() { SUB(registers.H); }
 void CPU::SUB_L() { SUB(registers.L); }
-// void CPU::SUB_M() {}
+void CPU::SUB_M() { SUB(memory[create16BitReg(registers.L, registers.H)]); }
 void CPU::SUB_A() { SUB(registers.A); }
 
 void CPU::SBB(uint8_t operand)
@@ -517,7 +517,7 @@ void CPU::SBB_D() { SBB(registers.D); }
 void CPU::SBB_E() { SBB(registers.E); }
 void CPU::SBB_H() { SBB(registers.H); }
 void CPU::SBB_L() { SBB(registers.L); }
-//void CPU::SBB_M() {}
+void CPU::SBB_M() { SBB(memory[create16BitReg(registers.L, registers.H)]); }
 void CPU::SBB_A() { SBB(registers.A); }
 
 void CPU::ANA(uint8_t operand)
@@ -533,7 +533,7 @@ void CPU::ANA_D() { ANA(registers.D); }
 void CPU::ANA_E() { ANA(registers.E); }
 void CPU::ANA_H() { ANA(registers.H); }
 void CPU::ANA_L() { ANA(registers.L); }
-// void CPU::ANA_M() { ANA(); }
+void CPU::ANA_M() { ANA(memory[create16BitReg(registers.L, registers.H)]); }
 void CPU::ANA_A() { ANA(registers.A); }
 
 void CPU::XRA(int8_t operand)
@@ -549,7 +549,7 @@ void CPU::XRA_D() { XRA(registers.D); }
 void CPU::XRA_E() { XRA(registers.E); }
 void CPU::XRA_H() { XRA(registers.H); }
 void CPU::XRA_L() { XRA(registers.L); }
-// void CPU::XRA_M() { XRA(); }
+void CPU::XRA_M() { XRA(memory[create16BitReg(registers.L, registers.H)]); }
 void CPU::XRA_A() { XRA(registers.A); }
 
 void CPU::ORA(uint8_t operand)
@@ -565,7 +565,7 @@ void CPU::ORA_D() { ORA(registers.D); }
 void CPU::ORA_E() { ORA(registers.E); }
 void CPU::ORA_H() { ORA(registers.H); }
 void CPU::ORA_L() { ORA(registers.L); }
-// void CPU::ORA_M() { ORA(); }
+void CPU::ORA_M() { ORA(memory[create16BitReg(registers.L, registers.H)]); }
 void CPU::ORA_A() { ORA(registers.A); }
 
 void CPU::CMP(uint8_t reg)
@@ -580,7 +580,7 @@ void CPU::CMP_D() { CMP(registers.D); }
 void CPU::CMP_E() { CMP(registers.E); }
 void CPU::CMP_H() { CMP(registers.H); }
 void CPU::CMP_L() { CMP(registers.L); }
-// void CPU::CMP_M() { CMP(); }
+void CPU::CMP_M() { CMP(memory[create16BitReg(registers.L, registers.H)]); }
 void CPU::CMP_A() { CMP(registers.A); }
 
 void CPU::RLC()
@@ -1018,4 +1018,21 @@ void CPU::STAX_D()
 {
     uint16_t toAddr = create16BitReg(registers.E, registers.D);
     memory[toAddr] = registers.A;
+}
+
+void CPU::PCHL()
+{
+  registers.PC = create16BitReg(registers.L, registers.H);
+}
+
+void CPU::XCHG()
+{
+   uint16_t regDE = create16BitReg(registers.E, registers.D);
+   uint16_t regHL = create16BitReg(registers.L, registers.H);
+
+   registers.D = getHighBits(regHL);
+   registers.E = getLowBits(regHL);
+
+   registers.H = getHighBits(regDE);
+   registers.L = getLowBits(regDE);
 }

@@ -346,6 +346,9 @@ public:
    void SBI();
    void XRI();
    void CPI();
+
+   void PCHL();
+   void XCHG();
 };
 
 #endif // CPU_H
