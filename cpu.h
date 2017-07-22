@@ -56,29 +56,29 @@ public:
    void CMC();
    void STC();
 
-   void INR(uint8_t&);
-   void INR_A();
-   void INR_B();
-   void INR_C();
-   void INR_D();
-   void INR_E();
-   void INR_H();
-   void INR_L();
-   void INR_M();
+   int INR(uint8_t&);
+   int INR_A();
+   int INR_B();
+   int INR_C();
+   int INR_D();
+   int INR_E();
+   int INR_H();
+   int INR_L();
+   int INR_M();
 
-   void DCR(uint8_t &reg);
-   void DCR_A();
-   void DCR_B();
-   void DCR_C();
-   void DCR_D();
-   void DCR_E();
-   void DCR_H();
-   void DCR_L();
-   void DCR_M();
+   int DCR(uint8_t &reg);
+   int DCR_A();
+   int DCR_B();
+   int DCR_C();
+   int DCR_D();
+   int DCR_E();
+   int DCR_H();
+   int DCR_L();
+   int DCR_M();
 
-   void CMA();
-   void DAA();
-   void NOP();
+   int CMA();
+   int DAA();
+   int NOP();
 
    void MOV_B_B();
    void MOV_B_C();
@@ -151,11 +151,11 @@ public:
    void MOV_A_M();
    void MOV_A_A();
 
-   void STAX_B();
-   void STAX_D();
+   int STAX_B();
+   int STAX_D();
 
-   void LDAX_B();
-   void LDAX_D();
+   int LDAX_B();
+   int LDAX_D();
 
    void ADD(uint8_t);
    void ADD_B();
@@ -237,10 +237,10 @@ public:
    void CMP_M();
    void CMP_A();
 
-   void RLC();
-   void RRC();
-   void RAL();
-   void RAR();
+   int RLC();
+   int RRC();
+   int RAL();
+   int RAR();
 
    void PUSH_B();
    void PUSH_D();
@@ -264,17 +264,17 @@ public:
    void JPE();
    void JPO();
 
-   void LXI_B();
-   void LXI_D();
-   void LXI_H();
+   int LXI_B();
+   int LXI_D();
+   int LXI_H();
    void LXI_SP();
 
-   void MVI_B();
-   void MVI_C();
-   void MVI_D();
+   int MVI_B();
+   int MVI_C();
+   int MVI_D();
    void MVI_E();
-   void MVI_H();
-   void MVI_L();
+   int MVI_H();
+   int MVI_L();
    void MVI_M();
    void MVI_A();
 
@@ -304,17 +304,17 @@ public:
 
    void LDA();
    void STA();
-   void SHLD();
-   void LHLD();
+   int SHLD();
+   int LHLD();
 
-   void INX_B();
-   void INX_D();
-   void INX_H();
+   int INX_B();
+   int INX_D();
+   int INX_H();
    void INX_SP();
 
-   void DCX_B();
-   void DCX_D();
-   void DCX_H();
+   int DCX_B();
+   int DCX_D();
+   int DCX_H();
    void DCX_SP();
 
    void EI();
@@ -332,10 +332,10 @@ public:
 
    void IN();
 
-   void DAD(uint8_t, uint8_t);
-   void DAD_B();
-   void DAD_D();
-   void DAD_H();
+   int DAD(uint8_t, uint8_t);
+   int DAD_B();
+   int DAD_D();
+   int DAD_H();
    void DAD_SP();
 
    void ADI();

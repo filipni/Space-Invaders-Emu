@@ -5,9 +5,31 @@
 
 QTextStream out(stdout);
 
-Emulator::Emulator()
+Emulator::Emulator(QWidget* parent) : QWidget(parent)
 {
+    screen = QImage(SCREEN_WIDTH * 8, SCREEN_HEIGHT * 8, QImage::Format_RGB32);
+}
 
+void Emulator::VRAMtoScreen()
+{
+    for (int i = 0; i < SCREEN_HEIGHT; ++i)
+    {
+        for (int j = 0; j < SCREEN_WIDTH; ++j)
+        {
+            uint8_t colorByte = cpu.memory[VIDEO_RAM_START + i * SCREEN_WIDTH + j];
+
+            for (int k = 0; k < 8; ++k)
+            {
+                QRgb color;
+                if (colorByte >> k & 1)
+                  color = qRgb(255,255,255);
+                else
+                  color = qRgb(0,0,0);
+
+                screen.setPixel(i, j * 8 + k, color);
+            }
+        }
+    }
 }
 
 void Emulator::run()
@@ -28,13 +50,12 @@ void Emulator::run()
     }
 
     bool running = true;
+    int counter = 0;
     while (running)
     {
         decode(cpu.memory[cpu.registers.PC]);
-        if (cpu.registers.PC > 0x2000)
-            running = false;
-
     }
+
 }
 
 int Emulator::decode(uint8_t op)
@@ -44,245 +65,101 @@ int Emulator::decode(uint8_t op)
     switch(op)
     {
       case 0x00:
-          cpu.NOP();
-          cpu.registers.PC += 1;
-          cycles = 4;
-          break;
+          return cpu.NOP();
       case 0x01:
-          cpu.LXI_B();
-          cpu.registers.PC += 3;
-          cycles = 10;
-          break;
+          return cpu.LXI_B();
       case 0x02:
-          cpu.STAX_B();
-          cpu.registers.PC += 1;
-          cycles = 7;
-          break;
+          return cpu.STAX_B();
       case 0x03:
-          cpu.INR_B();
-          cpu.registers.PC += 1;
-          cycles = 5;
-          break;
+          return cpu.INX_B();
       case 0x04:
-          cpu.INR_B();
-          cpu.registers.PC += 1;
-          cycles = 5;
-          break;
+          return cpu.INR_B();
       case 0x05:
-          cpu.DCR_B();
-          cpu.registers.PC += 1;
-          cycles = 5;
-          break;
+          return cpu.DCR_B();
       case 0x06:
-          cpu.MVI_B();
-          cpu.registers.PC +=2;
-          cycles = 7;
-          break;
+          return cpu.MVI_B();
       case 0x07:
-          cpu.RLC();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.RLC();
       case 0x08:
-          cpu.NOP();
-          cpu.registers.PC += 1;
-          cycles = 4;
-          break;
+          return cpu.NOP();
       case 0x09:
-          cpu.DAD_B();
-          cpu.registers.PC +=1;
-          cycles = 10;
-          break;
+          return cpu.DAD_B();
       case 0x0A:
-          cpu.LDAX_B();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.LDAX_B();
       case 0x0B:
-          cpu.DCX_B();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.DCX_B();
       case 0x0C:
-          cpu.INR_C();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.INR_C();
       case 0x0D:
-          cpu.DCR_C();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.DCR_C();
       case 0x0E:
-          cpu.MVI_C();
-          cpu.registers.PC +=2;
-          cycles = 7;
-          break;
+          return cpu.MVI_C();
       case 0x0F:
-          cpu.RRC();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.RRC();
       case 0x10:
-          cpu.NOP();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.NOP();
       case 0x11:
-          cpu.LXI_D();
-          cpu.registers.PC +=3;
-          cycles = 10;
-          break;
+          return cpu.LXI_D();
       case 0x12:
-          cpu.STAX_D();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.STAX_D();
       case 0x13:
-          cpu.INX_D();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.INX_D();
       case 0x14:
-          cpu.INR_D();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.INR_D();
       case 0x15:
-          cpu.DCR_D();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.DCR_D();
       case 0x16:
-          cpu.MVI_D();
-          cpu.registers.PC +=2;
-          cycles = 7;
-          break;
+          return cpu.MVI_D();
       case 0x17:
-          cpu.RAL();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.RAL();
       case 0x18:
-          cpu.NOP();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.NOP();
       case 0x19:
-          cpu.DAD_D();
-          cpu.registers.PC +=1;
-          cycles = 10;
-          break;
+          return cpu.DAD_D();
       case 0x1A:
-          cpu.LDAX_D();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.LDAX_D();
       case 0x1B:
-          cpu.DCX_D();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.DCX_D();
       case 0x1C:
-          cpu.INR_E();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.INR_E();
       case 0x1D:
-          cpu.DCR_E();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.DCR_E();
       case 0x1E:
-          cpu.MVI_C();
-          cpu.registers.PC +=2;
-          cycles = 7;
-          break;
+          return cpu.MVI_C();
       case 0x1F:
-          cpu.RAR();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.RAR();
       case 0x20:
-          cpu.NOP();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.NOP();
       case 0x21:
-          cpu.LXI_H();
-          cpu.registers.PC +=3;
-          cycles = 10;
-          break;
+          return cpu.LXI_H();
       case 0x22:
-          cpu.SHLD();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.SHLD();
       case 0x23:
-          cpu.INX_H();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.INX_H();
       case 0x24:
-          cpu.INR_H();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.INR_H();
       case 0x25:
-          cpu.DCR_H();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.DCR_H();
       case 0x26:
-          cpu.MVI_H();
-          cpu.registers.PC +=2;
-          cycles = 7;
-          break;
+          return cpu.MVI_H();
       case 0x27:
-          cpu.DAA();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.DAA();
       case 0x28:
-          cpu.NOP();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.NOP();
       case 0x29:
-          cpu.DAD_H();
-          cpu.registers.PC +=1;
-          cycles = 10;
-          break;
+          return cpu.DAD_H();
       case 0x2A:
-          cpu.LHLD();
-          cpu.registers.PC +=3;
-          cycles = 16;
-          break;
+          return cpu.LHLD();
       case 0x2B:
-          cpu.DCX_H();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.DCX_H();
       case 0x2C:
-          cpu.INR_L();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.INR_L();
       case 0x2D:
-          cpu.DCR_L();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.DCR_L();
       case 0x2E:
-          cpu.MVI_L();
-          cpu.registers.PC +=2;
-          cycles = 7;
-          break;
+          return cpu.MVI_L();
       case 0x2F:
-          cpu.CMA();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.CMA();
       case 0x30:
           cpu.NOP();
           cpu.registers.PC +=1;
