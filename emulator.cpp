@@ -58,7 +58,7 @@ void Emulator::run()
 
 }
 
-int Emulator::decode(uint8_t op)
+double Emulator::decode(uint8_t op)
 {
     double cycles = 0;
     QString instruction("");
@@ -161,987 +161,430 @@ int Emulator::decode(uint8_t op)
       case 0x2F:
           return cpu.CMA();
       case 0x30:
-          cpu.NOP();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.NOP();
       case 0x31:
-          cpu.LXI_SP();
-          cpu.registers.PC +=3;
-          cycles = 10;
-          break;
+          return cpu.LXI_SP();
       case 0x32:
-          cpu.STA();
-          cpu.registers.PC +=3;
-          cycles = 13;
-          break;
+          return cpu.STA();
       case 0x33:
-          cpu.INX_SP();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.INX_SP();
       case 0x34:
-          cpu.INR_M();
-          cpu.registers.PC +=1;
-          cycles = 10;
-          break;
+          return cpu.INR_M();
       case 0x35:
-          cpu.DCR_M();
-          cpu.registers.PC +=1;
-          cycles = 10;
-          break;
+          return cpu.DCR_M();
       case 0x36:
-          cpu.MVI_M();
-          cpu.registers.PC +=2;
-          cycles = 10;
-          break;
+          return cpu.MVI_M();
       case 0x37:
-          cpu.STC();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.STC();
       case 0x38:
-          cpu.NOP();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.NOP();
       case 0x39:
-          cpu.DAD_SP();
-          cpu.registers.PC +=1;
-          cycles = 10;
-          break;
+          return cpu.DAD_SP();
       case 0x3A:
-          cpu.LDA();
-          cpu.registers.PC +=3;
-          cycles = 13;
-          break;
+          return cpu.LDA();
       case 0x3B:
-          cpu.DCX_SP();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.DCX_SP();
       case 0x3C:
-          cpu.INR_A();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.INR_A();
       case 0x3D:
-          cpu.DCR_A();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.DCR_A();
       case 0x3E:
-          cpu.MVI_A();
-          cpu.registers.PC +=2;
-          cycles = 7;
-          break;
+          return cpu.MVI_A();
       case 0x3F:
-          cpu.CMC();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.CMC();
       case 0x40:
-          cpu.MOV_B_B();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_B_B();
       case 0x41:
-          cpu.MOV_B_C();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_B_C();
       case 0x42:
-          cpu.MOV_B_D();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_B_D();
       case 0x43:
-          cpu.MOV_B_E();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_B_E();
       case 0x44:
-          cpu.MOV_B_H();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_B_H();
       case 0x45:
-          cpu.MOV_B_L();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_B_L();
       case 0x46:
-          cpu.MOV_B_M();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.MOV_B_M();
       case 0x47:
-          cpu.MOV_B_A();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_B_A();
       case 0x48:
-          cpu.MOV_C_B();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_C_B();
       case 0x49:
-          cpu.MOV_C_C();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_C_C();
       case 0x4A:
-          cpu.MOV_C_D();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_C_D();
       case 0x4B:
-          cpu.MOV_C_E();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_C_E();
       case 0x4C:
-          cpu.MOV_C_H();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_C_H();
       case 0x4D:
-          cpu.MOV_C_L();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_C_L();
       case 0x4E:
-          cpu.MOV_C_M();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.MOV_C_M();
       case 0x4F:
-          cpu.MOV_C_A();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_C_A();
       case 0x50:
-          cpu.MOV_D_B();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_D_B();
       case 0x51:
-          cpu.MOV_D_C();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_D_C();
       case 0x52:
-          cpu.MOV_D_D();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_D_D();
       case 0x53:
-          cpu.MOV_D_E();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_D_E();
       case 0x54:
-          cpu.MOV_D_H();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_D_H();
       case 0x55:
-          cpu.MOV_D_L();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_D_L();
       case 0x56:
-          cpu.MOV_D_M();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.MOV_D_M();
       case 0x57:
-          cpu.MOV_D_A();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_D_A();
       case 0x58:
-          cpu.MOV_E_B();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_E_B();
       case 0x59:
-          cpu.MOV_E_C();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_E_C();
       case 0x5A:
-          cpu.MOV_E_D();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_E_D();
       case 0x5B:
-          cpu.MOV_E_E();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_E_E();
       case 0x5C:
-          cpu.MOV_E_H();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_E_H();
       case 0x5D:
-          cpu.MOV_E_L();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_E_L();
       case 0x5E:
-          cpu.MOV_E_M();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.MOV_E_M();
       case 0x5F:
-          cpu.MOV_E_A();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_E_A();
       case 0x60:
-          cpu.MOV_H_B();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_H_B();
       case 0x61:
-          cpu.MOV_H_C();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_H_C();
       case 0x62:
-          cpu.MOV_H_D();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_H_D();
       case 0x63:
-          cpu.MOV_H_E();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_H_E();
       case 0x64:
-          cpu.MOV_H_H();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_H_H();
       case 0x65:
-          cpu.MOV_H_L();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_H_L();
       case 0x66:
-          cpu.MOV_H_M();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.MOV_H_M();
       case 0x67:
-          cpu.MOV_H_A();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_H_A();
       case 0x68:
-          cpu.MOV_L_B();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_L_B();
       case 0x69:
-          cpu.MOV_L_C();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_L_C();
       case 0x6A:
-          cpu.MOV_L_D();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_L_D();
       case 0x6B:
-          cpu.MOV_L_E();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_L_E();
       case 0x6C:
-          cpu.MOV_L_H();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_L_H();
       case 0x6D:
-          cpu.MOV_L_L();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_L_L();
       case 0x6E:
-          cpu.MOV_L_M();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.MOV_L_M();
       case 0x6F:
-          cpu.MOV_L_A();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_L_A();
       case 0x70:
-          cpu.MOV_M_B();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.MOV_M_B();
       case 0x71:
-          cpu.MOV_M_C();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.MOV_M_C();
       case 0x72:
-          cpu.MOV_M_D();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.MOV_M_D();
       case 0x73:
-          cpu.MOV_M_E();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.MOV_M_E();
       case 0x74:
-          cpu.MOV_M_H();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.MOV_M_H();
       case 0x75:
-          cpu.MOV_M_L();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.MOV_M_L();
       case 0x76:
           //cpu.HLT();
           cpu.registers.PC +=1;
           cycles = 7;
           break;
       case 0x77:
-          cpu.MOV_M_A();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.MOV_M_A();
       case 0x78:
-          cpu.MOV_A_B();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_A_B();
       case 0x79:
-          cpu.MOV_A_C();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_A_C();
       case 0x7A:
-          cpu.MOV_A_D();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_A_D();
       case 0x7B:
-          cpu.MOV_A_E();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_A_E();
       case 0x7C:
-          cpu.MOV_A_H();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_A_H();
       case 0x7D:
-          cpu.MOV_A_L();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_A_L();
       case 0x7E:
-          cpu.MOV_L_M();
-          cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return cpu.MOV_L_M();
       case 0x7F:
-          cpu.MOV_A_A();
-          cpu.registers.PC +=1;
-          cycles = 5;
-          break;
+          return cpu.MOV_A_A();
       case 0x80:
-          cpu.ADD_B();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ADD_B();
       case 0x81:
-          cpu.ADD_C();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ADD_C();
       case 0x82:
-          cpu.ADD_D();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ADD_D();
       case 0x83:
-          cpu.ADD_E();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ADD_E();
       case 0x84:
-          cpu.ADD_H();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ADD_H();
       case 0x85:
-          cpu.ADD_L();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ADD_L();
       case 0x86:
-          cpu.ADD_M();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ADD_M();
       case 0x87:
-          cpu.ADD_A();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ADD_A();
       case 0x88:
-          cpu.ADC_B();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ADC_B();
       case 0x89:
-          cpu.ADC_C();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ADC_C();
       case 0x8A:
-          cpu.ADC_D();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ADC_D();
       case 0x8B:
-          cpu.ADC_E();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ADC_E();
       case 0x8C:
-          cpu.ADC_H();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ADC_H();
       case 0x8D:
-          cpu.ADC_L();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ADC_L();
       case 0x8E:
-          cpu.ADC_M();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ADC_M();
       case 0x8F:
-          cpu.ADC_A();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ADC_A();
       case 0x90:
-          cpu.SUB_B();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.SUB_B();
       case 0x91:
-          cpu.SUB_C();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.SUB_C();
       case 0x92:
-          cpu.SUB_D();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.SUB_D();
       case 0x93:
-          cpu.SUB_E();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.SUB_E();
       case 0x94:
-          cpu.SUB_H();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.SUB_H();
       case 0x95:
-          cpu.SUB_L();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.SUB_L();
       case 0x96:
-          cpu.SUB_M();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.SUB_M();
       case 0x97:
-          cpu.SUB_A();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.SUB_A();
       case 0x98:
-          cpu.SBB_B();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.SBB_B();
       case 0x99:
-          cpu.SBB_C();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.SBB_C();
       case 0x9A:
-          cpu.SBB_D();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.SBB_D();
       case 0x9B:
-          cpu.SBB_E();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.SBB_E();
       case 0x9C:
-          cpu.SBB_H();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.SBB_H();
       case 0x9D:
-          cpu.SBB_L();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.SBB_L();
       case 0x9E:
-          cpu.SBB_M();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.SBB_M();
       case 0x9F:
-          cpu.SBB_A();
-          cycles = 4;
-          cpu.registers.PC +=1;
-          break;
+          return cpu.SBB_A();
       case 0xA0:
-          cpu.ANA_B();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ANA_B();
       case 0xA1:
-          cpu.ANA_C();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ANA_C();
       case 0xA2:
-          cpu.ANA_D();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ANA_D();
       case 0xA3:
-          cpu.ANA_E();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
-          break;
+          return cpu.ANA_E();
       case 0xA4:
-          cpu.ANA_H();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ANA_H();
       case 0xA5:
-          cpu.ANA_L();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ANA_L();
       case 0xA6:
-          cpu.ANA_M();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ANA_M();
       case 0xA7:
-          cpu.ANA_A();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ANA_A();
       case 0xA8:
-          cpu.XRA_B();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.XRA_B();
       case 0xA9:
-          cpu.XRA_C();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.XRA_C();
       case 0xAA:
-          cpu.XRA_D();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.XRA_D();
       case 0xAB:
-          cpu.XRA_E();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.XRA_E();
       case 0xAC:
-          cpu.XRA_H();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.XRA_H();
       case 0xAD:
-          cpu.XRA_L();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.XRA_L();
       case 0xAE:
-          cpu.XRA_M();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.XRA_M();
       case 0xAF:
-          cpu.XRA_A();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.XRA_A();
       case 0xB0:
-          cpu.ORA_B();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ORA_B();
       case 0xB1:
-          cpu.ORA_C();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ORA_C();
       case 0xB2:
-          cpu.ORA_D();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ORA_D();
       case 0xB3:
-          cpu.ORA_E();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ORA_E();
       case 0xB4:
-          cpu.ORA_H();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ORA_H();
       case 0xB5:
-          cpu.ORA_L();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ORA_L();
       case 0xB6:
-          cpu.ORA_M();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ORA_M();
       case 0xB7:
-          cpu.ORA_A();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.ORA_A();
       case 0xB8:
-          cpu.CMP_B();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.CMP_B();
       case 0xB9:
-          cpu.CMP_C();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.CMP_C();
       case 0xBA:
-          cpu.CMP_D();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.CMP_D();
       case 0xBB:
-          cpu.CMP_E();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.CMP_E();
       case 0xBC:
-          cpu.CMP_H();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.CMP_H();
       case 0xBD:
-          cpu.CMP_L();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.CMP_L();
       case 0xBE:
-          cpu.CMP_M();
-          cpu.registers.PC +=1;
-          cycles = 4;
-          break;
+          return cpu.CMP_M();
       case 0xBF:
-          cpu.CMP_A();
-          cpu.registers.PC +=1;
-          break;
+          return cpu.CMP_A();
       case 0xC0:
-          cpu.RNZ();
-          cycles = 11 / 5;
-          break;
+          return cpu.RNZ();
       case 0xC1:
-          cpu.POP_B();
-          cpu.registers.PC +=1;
-          break;
+          return cpu.POP_B();
       case 0xC2:
-          cpu.JNZ();
-          cycles = 10;
-          break;
+          return cpu.JNZ();
       case 0xC3:
-          cpu.JMP();
-          cycles = 10;
-          break;
+          return cpu.JMP();
       case 0xC4:
-          cpu.CNZ();
-          cycles = 17 / 11;
-          break;
+          return cpu.CNZ();
       case 0xC5:
-          cpu.PUSH_B();
-          cpu.registers.PC +=1;
-          cycles = 11;
-          break;
+          return cpu.PUSH_B();
       case 0xC6:
-          cpu.ADI();
-          cpu.registers.PC +=2;
-          break;
+          return cpu.ADI();
       case 0xC7:
-          cpu.RST_0();
-          cycles = 11;
-          break;
+          return cpu.RST_0();
       case 0xC8:
-          cpu.RZ();
-          cycles = 11 / 5;
-          break;
+          return cpu.RZ();
       case 0xC9:
-          cpu.RET();
-          cycles = 10;
-          break;
+          return cpu.RET();
       case 0xCA:
-          cpu.JZ();
-          cycles = 10;
-          break;
+          return cpu.JZ();
       case 0xCB:
-          cpu.JMP();
-          cycles = 10;
-          break;
+          return cpu.JMP();
       case 0xCC:
-          cpu.CZ();
-          cycles = 17 / 11;
-          break;
+          return cpu.CZ();
       case 0xCD:
-          cpu.CALL();
-          cycles = 17;
-          break;
+          return cpu.CALL();
       case 0xCE:
-          cpu.ACI();
-          cpu.registers.PC +=2;
-          break;
+          return cpu.ACI();
       case 0xCF:
-          cpu.RST_1();
-          cycles = 11;
-          break;
+          return cpu.RST_1();
       case 0xD0:
-          cpu.RNC();
-          cycles = 11 / 5;
-          break;
+          return cpu.RNC();
       case 0xD1:
-          cpu.POP_D();
-          cpu.registers.PC +=1;
-          cycles = 10;
-          break;
+          return cpu.POP_D();
       case 0xD2:
-          cpu.JNC();
-          cycles = 10;
-          break;
+          return cpu.JNC();
       case 0xD3:
-          instruction = "OUT d8";
-          cpu.registers.PC +=2;
+          //instruction = "OUT d8";
+          cpu.registers.PC += 2;
+          return 10;
           break;
       case 0xD4:
-          cpu.CNC();
-          cycles = 17 / 11;
-          break;
+          return cpu.CNC();
       case 0xD5:
-          cpu.PUSH_D();
-          cpu.registers.PC +=1;
-          cycles = 11;
-          break;
+          return cpu.PUSH_D();
       case 0xD6:
-          cpu.SUI();
-          cpu.registers.PC +=2;
-          break;
+          return cpu.SUI();
       case 0xD7:
-          cpu.RST_2();
-          cycles = 11;
-          break;
+          return cpu.RST_2();
       case 0xD8:
-          cpu.RC();
-          cycles = 11 / 5;
-          break;
+          return cpu.RC();
       case 0xD9:
-          cpu.RET();
-          cycles = 10;
-          break;
+          return cpu.RET();
       case 0xDA:
-          cpu.JC();
-          cycles = 10;
-          break;
+          return cpu.JC();
       case 0xDB:
           //cpu.IN();
-          cpu.registers.PC +=2;
+          cpu.registers.PC += 2;
+          return 10;
           break;
       case 0xDC:
-          cpu.CC();
-          cycles = 17 / 11;
-          break;
+          return cpu.CC();
       case 0xDD:
-          cpu.CALL();
-          cycles = 17;
-          break;
+          return cpu.CALL();
       case 0xDE:
-          cpu.SBI();
-          cpu.registers.PC +=2;
-          break;
+          return cpu.SBI();
       case 0xDF:
-          cpu.RST_3();
-          cycles = 11;
-          break;
+          return cpu.RST_3();
       case 0xE0:
-          cpu.RPO();
-          cycles = 11 / 5;
-          break;
+          return cpu.RPO();
       case 0xE1:
-          cpu.POP_H();
-          cpu.registers.PC +=1;
-          cycles = 10;
-          break;
+          return cpu.POP_H();
       case 0xE2:
-          cpu.JPO();
-          cycles = 10;
-          break;
+          return cpu.JPO();
       case 0xE3:
-          cpu.XTHL();
-          cpu.registers.PC +=1;
-          break;
+          return cpu.XTHL();
       case 0xE4:
-          cpu.CPO();
-          cycles = 17 / 11;
-          break;
+          return cpu.CPO();
       case 0xE5:
-          cpu.PUSH_H();
-          cpu.registers.PC +=1;
-          break;
+          return cpu.PUSH_H();
       case 0xE6:
-          cpu.ANI();
-          cpu.registers.PC +=2;
-          break;
+          return cpu.ANI();
       case 0xE7:
-          cpu.RST_4();
-          cycles = 11;
-          break;
+          return cpu.RST_4();
       case 0xE8:
-          cpu.RPE();
-          cycles = 11 / 5;
-          break;
+          return cpu.RPE();
       case 0xE9:
-          cpu.PCHL();
-          cpu.registers.PC +=1;
-          break;
+          return cpu.PCHL();
       case 0xEA:
-          cpu.JPE();
-          cycles = 10;
-          break;
+          return cpu.JPE();
       case 0xEB:
-          cpu.XCHG();
-          cpu.registers.PC +=1;
-          break;
+          return cpu.XCHG();
       case 0xEC:
-          cpu.CPE();
-          cycles = 17 / 11;
-          break;
+          return cpu.CPE();
       case 0xED:
-          cpu.CALL();
-          cycles = 17;
-          break;
+          return cpu.CALL();
       case 0xEE:
-          cpu.XRI();
-          cpu.registers.PC +=2;
-          break;
+          return cpu.XRI();
       case 0xEF:
-          cpu.RST_5();
-          cycles = 11;
-          break;
+          return cpu.RST_5();
       case 0xF0:
-          cpu.RP();
-          cycles = 11 / 5;
-          break;
+          return cpu.RP();
       case 0xF1:
-          cpu.POP_PSW();
-          cpu.registers.PC +=1;
-          cycles = 10;
-          break;
+          return cpu.POP_PSW();
       case 0xF2:
-          cpu.JP();
-          cycles = 10;
-          break;
+          return cpu.JP();
       case 0xF3:
-          cpu.DI();
-          cpu.registers.PC +=1;
-          break;
+          return cpu.DI();
       case 0xF4:
-          cpu.CP();
-          cycles = 17 / 11;
-          break;
+          return cpu.CP();
       case 0xF5:
-          cpu.PUSH_PSW();
-          cpu.registers.PC +=1;
-          cycles = 10;
-          break;
+          return cpu.PUSH_PSW();
       case 0xF6:
-          cpu.ORI();
-          cpu.registers.PC +=2;
-          break;
+          return cpu.ORI();
       case 0xF7:
-          cpu.RST_6();
-          cycles = 11;
-          break;
+          return cpu.RST_6();
       case 0xF8:
-          cpu.RM();
-          cycles = 11 / 5;
-          break;
+          return cpu.RM();
       case 0xF9:
-          cpu.SPHL();
-          cpu.registers.PC +=1;
-          break;
+          return cpu.SPHL();
       case 0xFA:
-          cpu.JM();
-          cycles = 10;
-          break;
+          return cpu.JM();
       case 0xFB:
-          cpu.EI();
-          cpu.registers.PC +=1;
-          break;
+          return cpu.EI();
       case 0xFC:
-          cpu.CM();
-          cycles = 17 / 11;
-          break;
+          return cpu.CM();
       case 0xFD:
-          cpu.CALL();
-          cycles = 17;
-          break;
+          return cpu.CALL();
       case 0xFE:
-          cpu.CPI();
-          cpu.registers.PC +=2;
-          break;
+          return cpu.CPI();
       case 0xFF:
-          cpu.RST_7();
-          cycles = 11;
-          break;
+          return cpu.RST_7();
       default:
           QString errorString = "Instruction not implemented: " + QString().sprintf("%02x", op);
           qFatal(errorString.toStdString().c_str());

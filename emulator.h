@@ -17,7 +17,7 @@ Q_OBJECT
 public:
     Emulator(QWidget* parent = 0);
     void run();
-    int decode(uint8_t);
+    double decode(uint8_t);
 
     QImage screen;
     CPU cpu;
