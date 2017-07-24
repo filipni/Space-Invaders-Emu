@@ -978,56 +978,56 @@ int CPU::POP_PSW()
 
 int CPU::JMP()
 {
-  uint8_t lowBits = memory[registers.PC+1];
-  uint8_t highBits = memory[registers.PC+2];
-  registers.PC = (highBits << 8) + lowBits;
+    uint8_t lowBits = memory[registers.PC+1];
+    uint8_t highBits = memory[registers.PC+2];
+    registers.PC = (highBits << 8) + lowBits;
 
-  return 10;
+    return 10;
 }
 
 int CPU::LXI_B()
 {
-  registers.C = memory[registers.PC+1];
-  registers.B = memory[registers.PC+2];
+    registers.C = memory[registers.PC+1];
+    registers.B = memory[registers.PC+2];
 
-  registers.PC += 3;
-  return 10;
+    registers.PC += 3;
+    return 10;
 }
 
 int CPU::LXI_D()
 {
-  registers.E = memory[registers.PC+1];
-  registers.D = memory[registers.PC+2];
+    registers.E = memory[registers.PC+1];
+    registers.D = memory[registers.PC+2];
 
-  registers.PC += 3;
-  return 10;
+    registers.PC += 3;
+    return 10;
 }
 
 int CPU::LXI_H()
 {
-  registers.L = memory[registers.PC+1];
-  registers.H = memory[registers.PC+2];
+    registers.L = memory[registers.PC+1];
+    registers.H = memory[registers.PC+2];
 
-  registers.PC += 3;
-  return 10;
+    registers.PC += 3;
+    return 10;
 }
 
 int CPU::LXI_SP()
 {
-  uint8_t lowBits = memory[registers.PC+1];
-  uint8_t highBits = memory[registers.PC+2];
-  registers.SP = (highBits << 8) + lowBits;
+    uint8_t lowBits = memory[registers.PC+1];
+    uint8_t highBits = memory[registers.PC+2];
+    registers.SP = (highBits << 8) + lowBits;
 
-  registers.PC += 3;
-  return 10;
+    registers.PC += 3;
+    return 10;
 }
 
 int CPU::MVI_B()
 {
-  registers.B = memory[registers.PC+1];
+    registers.B = memory[registers.PC+1];
 
-  registers.PC += 2;
-  return 7;
+    registers.PC += 2;
+    return 7;
 }
 
 int CPU::MVI_C()
@@ -1325,7 +1325,7 @@ int CPU::DI()
 
 int CPU::RST(uint8_t resetNr)
 {
-    Q_ASSERT(resetNr >= 0 && resetNr <= 7);
+    Q_ASSERT(resetNr <= 7);
 
     uint16_t returnPC = registers.PC + 1;
     uint8_t lowPCBits = getLowBits(returnPC);

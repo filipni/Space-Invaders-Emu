@@ -8,8 +8,12 @@
 #include "cpu.h"
 
 #define ROM_FILE_PATH "/home/filip/Dropbox/SI2/Disassembler/invaders.rom"
-const int SCREEN_WIDTH = 28;
-const int SCREEN_HEIGHT = 32;
+
+const int SCREEN_WIDTH_BYTES = 32;
+const int SCREEN_HEIGHT_BYTES = 28;
+
+const int SCREEN_WIDTH_PIXELS = 256;
+const int SCREEN_HEIGHT_PIXELS = 224;
 
 class Emulator : public QWidget
 {

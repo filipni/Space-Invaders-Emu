@@ -1,35 +1,40 @@
 #include "emulator.h"
 #include <QFile>
 #include <QTextStream>
+#include <QColor>
 #include <QDebug>
 
 QTextStream out(stdout);
 
 Emulator::Emulator(QWidget* parent) : QWidget(parent)
 {
-    screen = QImage(SCREEN_WIDTH * 8, SCREEN_HEIGHT * 8, QImage::Format_RGB32);
+    screen = QImage(SCREEN_WIDTH_PIXELS, SCREEN_HEIGHT_PIXELS, QImage::Format_RGB32);
 }
 
 void Emulator::VRAMtoScreen()
 {
-    for (int i = 0; i < SCREEN_HEIGHT; ++i)
+    for (int i = 0; i < SCREEN_HEIGHT_PIXELS; ++i)
     {
-        for (int j = 0; j < SCREEN_WIDTH; ++j)
+        for (int j = 0; j < SCREEN_WIDTH_BYTES; ++j)
         {
-            uint8_t colorByte = cpu.memory[VIDEO_RAM_START + i * SCREEN_WIDTH + j];
+            uint8_t currentByte = cpu.memory[VIDEO_RAM_START + i * SCREEN_WIDTH_BYTES + j];
 
             for (int k = 0; k < 8; ++k)
             {
-                QRgb color;
-                if (colorByte >> k & 1)
-                  color = qRgb(255,255,255);
+                QColor color;
+                int currentPixel = currentByte >> k & 1;
+                if (currentPixel)
+                  color = Qt::white;
                 else
-                  color = qRgb(0,0,0);
+                  color = Qt::black;
 
-                screen.setPixel(i, j * 8 + k, color);
+                int xPos = j * 8 + k;
+                int yPos = i;
+                screen.setPixel(xPos, yPos, color.rgb());
             }
         }
     }
+    screen.save("/home/filip/space.png", "PNG");
 }
 
 void Emulator::run()
@@ -54,14 +59,20 @@ void Emulator::run()
     while (running)
     {
         decode(cpu.memory[cpu.registers.PC]);
+        counter++;
+
+        if (counter == 100000000)
+        {
+            counter = 0;
+            VRAMtoScreen();
+        }
+
     }
 
 }
 
 double Emulator::decode(uint8_t op)
 {
-    double cycles = 0;
-    QString instruction("");
     switch(op)
     {
       case 0x00:
@@ -303,8 +314,7 @@ double Emulator::decode(uint8_t op)
       case 0x76:
           //cpu.HLT();
           cpu.registers.PC +=1;
-          cycles = 7;
-          break;
+          return 7;
       case 0x77:
           return cpu.MOV_M_A();
       case 0x78:
@@ -493,7 +503,6 @@ double Emulator::decode(uint8_t op)
           //instruction = "OUT d8";
           cpu.registers.PC += 2;
           return 10;
-          break;
       case 0xD4:
           return cpu.CNC();
       case 0xD5:
@@ -512,7 +521,6 @@ double Emulator::decode(uint8_t op)
           //cpu.IN();
           cpu.registers.PC += 2;
           return 10;
-          break;
       case 0xDC:
           return cpu.CC();
       case 0xDD:
@@ -586,8 +594,7 @@ double Emulator::decode(uint8_t op)
       case 0xFF:
           return cpu.RST_7();
       default:
-          QString errorString = "Instruction not implemented: " + QString().sprintf("%02x", op);
-          qFatal(errorString.toStdString().c_str());
-      }
-      return cycles;
+          qFatal("Instruction not implemented: %02x", op);
+    }
+    return 0;
 }
