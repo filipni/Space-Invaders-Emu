@@ -7,9 +7,11 @@ SOURCES += \
     main.cpp \
     emulator.cpp \
     cpu.cpp \
-    flagregister.cpp
+    flagregister.cpp \
+    gui.cpp
 
 HEADERS += \
     emulator.h \
     cpu.h \
-    flagregister.h
+    flagregister.h \
+    gui.h

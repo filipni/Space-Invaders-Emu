@@ -1,14 +1,17 @@
 #include <QApplication>
 #include <QDebug>
 #include <QLabel>
-#include "cpu.h"
-#include "emulator.h"
+#include <QPushButton>
+#include <QHBoxLayout>
+
+#include "gui.h"
 
 int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
-    Emulator emu;
-    emu.run();
-    //emu.show();
+
+    GUI window;
+    window.show();
+
     return app.exec();
 }

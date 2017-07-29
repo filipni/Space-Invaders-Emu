@@ -6,9 +6,10 @@
 
 QTextStream out(stdout);
 
-Emulator::Emulator(QWidget* parent) : QWidget(parent)
+Emulator::Emulator()
 {
     screen = QImage(SCREEN_WIDTH_PIXELS, SCREEN_HEIGHT_PIXELS, QImage::Format_RGB32);
+    rotatedScreen = QImage(SCREEN_HEIGHT_PIXELS, SCREEN_WIDTH_PIXELS, QImage::Format_RGB32);
 }
 
 void Emulator::VRAMtoScreen()
@@ -34,7 +35,12 @@ void Emulator::VRAMtoScreen()
             }
         }
     }
-    screen.save("/home/filip/space.png", "PNG");
+
+    QTransform rotation;
+    rotation.rotate(-90);
+    rotatedScreen = screen.transformed(rotation);
+
+    emit screenUpdated(&rotatedScreen);
 }
 
 void Emulator::run()
@@ -50,9 +56,7 @@ void Emulator::run()
     Q_ASSERT(fileData.size() == ROM_SIZE);
 
     for (int i = ROM_START; i < ROM_SIZE; ++i)
-    {
         cpu.memory[i] = fileData.at(i);
-    }
 
     bool running = true;
     int counter = 0;
