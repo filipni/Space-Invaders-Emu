@@ -50,6 +50,7 @@ public:
 
    uint8_t input1;
    uint8_t input2;
+   uint8_t input3;
 
    uint8_t output2;
    uint8_t output3;
@@ -65,6 +66,9 @@ public:
 
    int addBytes(uint8_t, uint8_t, bool, FlagRegister);
    uint8_t getBit(uint8_t, uint8_t);
+
+   uint16_t shiftRegister;
+   void shiftRegisterOp();
 
    int CMC();
    int STC();

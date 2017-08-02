@@ -1384,6 +1384,7 @@ int CPU::OUT()
         break;
       case 4:
         output4 = registers.A;
+        shiftRegisterOp();
         break;
       case 5:
         output5 = registers.A;
@@ -1397,6 +1398,21 @@ int CPU::OUT()
 
     registers.PC += 2;
     return 10;
+}
+
+void CPU::shiftRegisterOp()
+{
+    uint8_t offset = output2 & 7;  // Offset is kept in the three first bits
+
+    shiftRegister >>= 8; // Make room for the new value
+
+    // Add the new value to the upper byte of the shift register
+    uint16_t shiftIn = output4 << 8;
+    shiftRegister |= shiftIn;
+
+    // Pick out the result and convert it to an 8-bit value
+    uint16_t resultBitMask = 0xFF00 >> offset;
+    input3 = (shiftRegister & resultBitMask) >> (8 - offset);
 }
 
 int CPU::ADI() { ADD(memory[registers.PC+1]); return 7; }
