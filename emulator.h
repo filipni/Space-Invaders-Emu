@@ -35,6 +35,9 @@ private:
 
 signals:
     void screenUpdated(QImage*);
+
+public slots:
+    void inputHandler(const int, bool);
 };
 
 #endif // EMULATOR_H

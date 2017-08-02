@@ -16,6 +16,10 @@ Q_OBJECT
 public:
     GUI();
 
+protected:
+    void keyPressEvent(QKeyEvent *);
+    void keyReleaseEvent(QKeyEvent *);
+
 private:
     QPushButton* startButton;
     QPushButton* stopButton;
@@ -29,6 +33,9 @@ public slots:
     void startEmulator();
     void stopEmulator();
     void closeEvent(QCloseEvent*);
+
+signals:
+    void inputReceived(const int, bool);
 };
 
 #endif // GUI_H

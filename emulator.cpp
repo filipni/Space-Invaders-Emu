@@ -43,6 +43,26 @@ void Emulator::VRAMtoScreen()
     emit screenUpdated(&rotatedScreen);
 }
 
+void Emulator::inputHandler(const int key, bool pressed)
+{
+    uint8_t bitmask = 0;
+    if (key == Qt::Key_Left)
+        bitmask = P1_LEFT;
+    else if (key == Qt::Key_Right)
+        bitmask = P1_RIGHT;
+    else if (key == Qt::Key_Return)
+        bitmask = P1_START;
+    else if (key == Qt::Key_Space)
+        bitmask = P1_SHOOT;
+    else if (key == Qt::Key_C)
+        bitmask = COIN;
+
+    if (pressed)
+        cpu.input1 |= bitmask;
+    else
+        cpu.input1 &= bitmask ^ 0xFF;
+}
+
 void Emulator::run()
 {
     QFile romFile(ROM_FILE_PATH);
@@ -59,18 +79,26 @@ void Emulator::run()
         cpu.memory[i] = fileData.at(i);
 
     bool running = true;
-    int counter = 0;
+    int cyclesTot = 0;
     while (running)
     {
-        decode(cpu.memory[cpu.registers.PC]);
-        counter++;
+        int cycles = decode(cpu.memory[cpu.registers.PC]);
 
-        if (counter == 100000000)
+        if (cyclesTot > 33333)
         {
-            counter = 0;
-            VRAMtoScreen();
+
+           if (cpu.interruptsEnabled)
+           {
+               cpu.RST_1();
+               cpu.RST_2();
+           }
+           VRAMtoScreen();
+           cyclesTot = 0;
         }
 
+        QThread::usleep(0.5 * cycles);
+
+        cyclesTot += cycles;
     }
 
 }
@@ -504,9 +532,7 @@ double Emulator::decode(uint8_t op)
       case 0xD2:
           return cpu.JNC();
       case 0xD3:
-          //instruction = "OUT d8";
-          cpu.registers.PC += 2;
-          return 10;
+          return cpu.OUT();
       case 0xD4:
           return cpu.CNC();
       case 0xD5:
@@ -522,9 +548,7 @@ double Emulator::decode(uint8_t op)
       case 0xDA:
           return cpu.JC();
       case 0xDB:
-          //cpu.IN();
-          cpu.registers.PC += 2;
-          return 10;
+          return cpu.IN();
       case 0xDC:
           return cpu.CC();
       case 0xDD:

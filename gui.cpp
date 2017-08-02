@@ -18,6 +18,7 @@ GUI::GUI()
     connect(stopButton, SIGNAL(pressed()), this, SLOT(stopEmulator()));
 
     connect(&emu, SIGNAL(screenUpdated(QImage*)), this, SLOT(showScreen(QImage*)));
+    connect(this, SIGNAL(inputReceived(const int, bool)), &emu, SLOT(inputHandler(int, bool)));
 }
 
 void GUI::showScreen(QImage* image)
@@ -43,4 +44,14 @@ void GUI::closeEvent(QCloseEvent*)
 {
     emu.terminate();
     emu.wait();
+}
+
+void GUI::keyPressEvent(QKeyEvent* event)
+{
+    emit inputReceived(event->key(), true);
+}
+
+void GUI::keyReleaseEvent(QKeyEvent* event)
+{
+    emit inputReceived(event->key(), false);
 }

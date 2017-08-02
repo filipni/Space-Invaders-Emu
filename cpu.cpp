@@ -1350,7 +1350,7 @@ int CPU::RST_5() { return RST(5); }
 int CPU::RST_6() { return RST(6); }
 int CPU::RST_7() { return RST(7); }
 
-void CPU::IN()
+int CPU::IN()
 {
     uint8_t inputNr = memory[registers.PC+1];
 
@@ -1362,12 +1362,41 @@ void CPU::IN()
       case 2:
         registers.A = input2;
         break;
-      case 3:
-        registers.A = input3;
-        break;
       default:
         qDebug() << "Inupt nr " << inputNr << " not implemented";
     }
+
+    registers.PC += 2;
+    return 10;
+}
+
+int CPU::OUT()
+{
+    uint8_t outputNr = memory[registers.PC+1];
+
+    switch (outputNr)
+    {
+      case 2:
+        output2 = registers.A;
+        break;
+      case 3:
+        output3 = registers.A;
+        break;
+      case 4:
+        output4 = registers.A;
+        break;
+      case 5:
+        output5 = registers.A;
+        break;
+      case 6:
+        output6 = registers.A;
+        break;
+      default:
+        qDebug() << "Output nr " << outputNr << " not implemented";
+    }
+
+    registers.PC += 2;
+    return 10;
 }
 
 int CPU::ADI() { ADD(memory[registers.PC+1]); return 7; }

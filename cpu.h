@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <cstring>
 #include <QDebug>
+#include <QKeyEvent>
 #include "flagregister.h"
 
 const uint8_t HIGH_ORDER_BIT = 0x80;
@@ -19,6 +20,13 @@ const int WORK_RAM_SIZE = 0x400;
 
 const int VIDEO_RAM_START = 0x2400;
 const int VIDEO_RAM_SIZE = 0x1C00;
+
+const int COIN = 1;
+const int P2_START = 1 << 1;
+const int P1_START = 1 << 2;
+const int P1_SHOOT = 1 << 4;
+const int P1_LEFT = 1 << 5;
+const int P1_RIGHT = 1 << 6;
 
 class CPU
 {
@@ -42,7 +50,12 @@ public:
 
    uint8_t input1;
    uint8_t input2;
-   uint8_t input3;
+
+   uint8_t output2;
+   uint8_t output3;
+   uint8_t output4;
+   uint8_t output5;
+   uint8_t output6;
 
    uint8_t memory[MEMORY_SIZE];
 
@@ -330,7 +343,8 @@ public:
    int RST_6();
    int RST_7();
 
-   void IN();
+   int IN();
+   int OUT();
 
    int DAD(uint8_t, uint8_t);
    int DAD_B();
