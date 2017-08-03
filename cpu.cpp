@@ -4,7 +4,6 @@
 CPU::CPU() : memory()
 {
     memset(&registers, 0, sizeof(registers));
-    interruptsEnabled = false;
 }
 
 uint8_t CPU::getHighBits(uint16_t reg)
@@ -1101,11 +1100,15 @@ int CPU::CALL()
 double CPU::conditionalCall(bool condition)
 {
     if(condition)
+    {
         CALL();
+        return 17;
+    }
     else
+    {
         registers.PC += 3;
-
-    return 17 / 11;
+        return 11;
+    }
 }
 
 double CPU::CC() { return conditionalCall(conditionBits.testBits(CARRY_BIT)); }
@@ -1128,11 +1131,15 @@ int CPU::RET()
 double CPU::conditionalReturn(bool condition)
 {
     if (condition)
+    {
         RET();
+        return 11;
+    }
     else
+    {
         registers.PC++;
-
-    return 11 / 5;
+        return 5;
+    }
 }
 
 double CPU::RC() { return conditionalReturn(conditionBits.testBits(CARRY_BIT)); }
@@ -1327,9 +1334,8 @@ int CPU::RST(uint8_t resetNr)
 {
     Q_ASSERT(resetNr <= 7);
 
-    uint16_t returnPC = registers.PC + 1;
-    uint8_t lowPCBits = getLowBits(returnPC);
-    uint8_t highPCBits = getHighBits(returnPC);
+    uint8_t lowPCBits = getLowBits(registers.PC);
+    uint8_t highPCBits = getHighBits(registers.PC);
 
     memory[registers.SP-1] = highPCBits;
     memory[registers.SP-2] = lowPCBits;
@@ -1361,6 +1367,9 @@ int CPU::IN()
         break;
       case 2:
         registers.A = input2;
+        break;
+      case 3:
+        registers.A = input3;
         break;
       default:
         qDebug() << "Inupt nr " << inputNr << " not implemented";
@@ -1415,14 +1424,14 @@ void CPU::shiftRegisterOp()
     input3 = (shiftRegister & resultBitMask) >> (8 - offset);
 }
 
-int CPU::ADI() { ADD(memory[registers.PC+1]); return 7; }
-int CPU::SUI() { SUB(memory[registers.PC+1]); return 7; }
-int CPU::ANI() { ANA(memory[registers.PC+1]); return 7; }
-int CPU::ORI() { ORA(memory[registers.PC+1]); return 7; }
-int CPU::ACI() { ADC(memory[registers.PC+1]); return 7; }
-int CPU::SBI() { SBB(memory[registers.PC+1]); return 7; }
-int CPU::XRI() { XRA(memory[registers.PC+1]); return 7; }
-int CPU::CPI() { CMP(memory[registers.PC+1]); return 7; }
+int CPU::ADI() { ADD(memory[registers.PC+1]); registers.PC++; return 7;}
+int CPU::SUI() { SUB(memory[registers.PC+1]); registers.PC++; return 7;}
+int CPU::ANI() { ANA(memory[registers.PC+1]); registers.PC++; return 7;}
+int CPU::ORI() { ORA(memory[registers.PC+1]); registers.PC++; return 7;}
+int CPU::ACI() { ADC(memory[registers.PC+1]); registers.PC++; return 7;}
+int CPU::SBI() { SBB(memory[registers.PC+1]); registers.PC++; return 7;}
+int CPU::XRI() { XRA(memory[registers.PC+1]); registers.PC++; return 7;}
+int CPU::CPI() { CMP(memory[registers.PC+1]); registers.PC++; return 7;}
 
 int CPU::DAD(uint8_t highReg, uint8_t lowReg)
 {
@@ -1445,7 +1454,7 @@ int CPU::DAD_SP()
     uint16_t regHL = create16BitReg(registers.L, registers.H);
     int32_t result = registers.SP + regHL;
 
-    if (result & 0x100)
+    if (result & 0x10000)
         conditionBits.setBits(CARRY_BIT);
 
     registers.H = getHighBits( (uint16_t) result);
@@ -1503,11 +1512,11 @@ int CPU::XTHL()
     uint8_t regH = registers.H;
     uint8_t regL = registers.L;
 
-    registers.L = memory[registers.PC];
-    registers.H = memory[registers.PC+1];
+    registers.L = memory[registers.SP];
+    registers.H = memory[registers.SP+1];
 
-    memory[registers.PC] = regL;
-    memory[registers.PC+1] = regH;
+    memory[registers.SP] = regL;
+    memory[registers.SP+1] = regH;
 
     registers.PC++;
     return 18;

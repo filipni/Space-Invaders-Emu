@@ -46,17 +46,19 @@ public:
         uint16_t SP;
     } registers;
 
-   bool interruptsEnabled;
+   bool interruptsEnabled = false;
 
-   uint8_t input1;
-   uint8_t input2;
-   uint8_t input3;
+   uint8_t input1 = 0;
+   uint8_t input2 = 0;
+   uint8_t input3 = 0;
 
-   uint8_t output2;
-   uint8_t output3;
-   uint8_t output4;
-   uint8_t output5;
-   uint8_t output6;
+   uint8_t output2 = 0;
+   uint8_t output3 = 0;
+   uint8_t output4 = 0;
+   uint8_t output5 = 0;
+   uint8_t output6 = 0;
+
+   uint16_t shiftRegister = 0;
 
    uint8_t memory[MEMORY_SIZE];
 
@@ -67,7 +69,6 @@ public:
    int addBytes(uint8_t, uint8_t, bool, FlagRegister);
    uint8_t getBit(uint8_t, uint8_t);
 
-   uint16_t shiftRegister;
    void shiftRegisterOp();
 
    int CMC();

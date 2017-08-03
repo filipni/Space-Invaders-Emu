@@ -80,20 +80,29 @@ void Emulator::run()
 
     bool running = true;
     int cyclesTot = 0;
+    bool toggle = true;
     while (running)
     {
         int cycles = decode(cpu.memory[cpu.registers.PC]);
 
-        if (cyclesTot > 33333)
+        if (cyclesTot > 250)
         {
-
            if (cpu.interruptsEnabled)
            {
-               cpu.RST_1();
-               cpu.RST_2();
+               cpu.interruptsEnabled = false;
+               if (toggle)
+               {
+                   cpu.RST_1();
+                   toggle = false;
+               }
+               else
+               {
+                   cpu.RST_2();
+                   toggle = true;
+               }
+               VRAMtoScreen();
+               cyclesTot = 0;
            }
-           VRAMtoScreen();
-           cyclesTot = 0;
         }
 
         QThread::usleep(0.5 * cycles);
@@ -345,6 +354,7 @@ double Emulator::decode(uint8_t op)
           return cpu.MOV_M_L();
       case 0x76:
           //cpu.HLT();
+          qDebug() << "HLT instruction not implemented yet";
           cpu.registers.PC +=1;
           return 7;
       case 0x77:
