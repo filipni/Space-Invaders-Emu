@@ -85,7 +85,7 @@ void Emulator::run()
     {
         int cycles = decode(cpu.memory[cpu.registers.PC]);
 
-        if (cyclesTot > 250)
+        if (cyclesTot >= 17066)
         {
            if (cpu.interruptsEnabled)
            {
@@ -372,7 +372,7 @@ double Emulator::decode(uint8_t op)
       case 0x7D:
           return cpu.MOV_A_L();
       case 0x7E:
-          return cpu.MOV_L_M();
+          return cpu.MOV_A_M();
       case 0x7F:
           return cpu.MOV_A_A();
       case 0x80:

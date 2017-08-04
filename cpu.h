@@ -28,6 +28,11 @@ const int P1_SHOOT = 1 << 4;
 const int P1_LEFT = 1 << 5;
 const int P1_RIGHT = 1 << 6;
 
+const int PORT0 = 0b01110000;
+const int PORT1 = 0b00010000;
+const int PORT2 = 0b00000000;
+const int PORT3 = 0;
+
 class CPU
 {
 public:
@@ -46,19 +51,20 @@ public:
         uint16_t SP;
     } registers;
 
-   bool interruptsEnabled = false;
+   bool interruptsEnabled;
 
-   uint8_t input1 = 0;
-   uint8_t input2 = 0;
-   uint8_t input3 = 0;
+   uint8_t input0;
+   uint8_t input1;
+   uint8_t input2;
+   uint8_t input3;
 
-   uint8_t output2 = 0;
-   uint8_t output3 = 0;
-   uint8_t output4 = 0;
-   uint8_t output5 = 0;
-   uint8_t output6 = 0;
+   uint8_t output2;
+   uint8_t output3;
+   uint8_t output4;
+   uint8_t output5;
+   uint8_t output6;
 
-   uint16_t shiftRegister = 0;
+   uint16_t shiftRegister;
 
    uint8_t memory[MEMORY_SIZE];
 

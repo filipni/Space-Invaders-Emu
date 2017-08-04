@@ -1,9 +1,19 @@
 #include "cpu.h"
 #include <cstring>
 #include <QtGlobal>
-CPU::CPU() : memory()
+CPU::CPU() : conditionBits(), memory()
 {
     memset(&registers, 0, sizeof(registers));
+
+    input0 = PORT0;
+    input1 = PORT1;
+    input2 = PORT2;
+    input3 = PORT3;
+
+    shiftRegister = 0;
+    output2 = output3 = output4 = output5 = output6 = 0;
+
+    interruptsEnabled = false;
 }
 
 uint8_t CPU::getHighBits(uint16_t reg)
@@ -667,7 +677,7 @@ int CPU::MOV_A_A()
 
 int CPU::ADD(uint8_t operand)
 {
-    FlagRegister flagsToCalc = CARRY_BIT | SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT;
+    FlagRegister flagsToCalc(CARRY_BIT | SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT);
     registers.A = addBytes(registers.A, operand, false, flagsToCalc);
 
     registers.PC++;
@@ -689,7 +699,7 @@ int CPU::ADD_M()
 
 int CPU::ADC(uint8_t operand)
 {
-    FlagRegister flagsToCalc = CARRY_BIT | SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT;
+    FlagRegister flagsToCalc(CARRY_BIT | SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT);
     registers.A = addBytes(registers.A, operand, true, flagsToCalc);
 
     registers.PC++;
@@ -711,7 +721,7 @@ int CPU::ADC_M()
 
 int CPU::SUB(uint8_t operand)
 {
-    FlagRegister flagsToCalc = CARRY_BIT | SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT;
+    FlagRegister flagsToCalc(CARRY_BIT | SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT);
     int8_t operand2Cmp = (operand ^ 0xFF) + 1;
     registers.A = addBytes(registers.A, operand2Cmp, false, flagsToCalc);
     conditionBits.setBits(CARRY_BIT, !conditionBits.testBits(CARRY_BIT)); // Since this is a substraction, we invert the carry
@@ -735,7 +745,7 @@ int CPU::SUB_M()
 
 int CPU::SBB(uint8_t operand)
 {
-    FlagRegister flagsToCalc = CARRY_BIT | SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT;
+    FlagRegister flagsToCalc(CARRY_BIT | SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT);
     operand = operand + conditionBits.testBits(CARRY_BIT);
     int8_t operand2Cmp = (operand ^ 0xFF) + 1;
     registers.A = addBytes(registers.A, operand2Cmp, false, flagsToCalc);
@@ -829,8 +839,10 @@ int CPU::ORA_M()
 
 int CPU::CMP(uint8_t reg)
 {
-    FlagRegister flagsToCalc(SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT);
+    FlagRegister flagsToCalc(SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT | CARRY_BIT);
     addBytes(registers.A, -reg, false, flagsToCalc);
+
+    conditionBits.setBits(CARRY_BIT, !conditionBits.testBits(CARRY_BIT)); // Since this is a substraction, we invert the carry
 
     registers.PC++;
     return 4;
@@ -979,7 +991,7 @@ int CPU::JMP()
 {
     uint8_t lowBits = memory[registers.PC+1];
     uint8_t highBits = memory[registers.PC+2];
-    registers.PC = (highBits << 8) + lowBits;
+    registers.PC = create16BitReg(lowBits, highBits);
 
     return 10;
 }
@@ -1015,7 +1027,7 @@ int CPU::LXI_SP()
 {
     uint8_t lowBits = memory[registers.PC+1];
     uint8_t highBits = memory[registers.PC+2];
-    registers.SP = (highBits << 8) + lowBits;
+    registers.SP = create16BitReg(lowBits, highBits);
 
     registers.PC += 3;
     return 10;
@@ -1071,7 +1083,7 @@ int CPU::MVI_L()
 
 int CPU::MVI_M()
 {
-    int destination = (registers.H << 8) + registers.L;
+    int destination = create16BitReg(registers.L, registers.H);
     memory[destination] = memory[registers.PC+1];
 
     registers.PC += 2;
