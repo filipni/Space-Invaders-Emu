@@ -16,6 +16,8 @@ const int SCREEN_HEIGHT_BYTES = 28;
 const int SCREEN_WIDTH_PIXELS = 256;
 const int SCREEN_HEIGHT_PIXELS = 224;
 
+const int INTERRUPT_FREQ = 1700000;
+
 class Emulator : public QThread
 {
 Q_OBJECT
@@ -29,6 +31,7 @@ private:
 
     double decode(uint8_t);
     void VRAMtoScreen();
+    QColor chooseColor(int);
 
 private:
     void run();

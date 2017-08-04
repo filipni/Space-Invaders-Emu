@@ -22,15 +22,16 @@ void Emulator::VRAMtoScreen()
 
             for (int k = 0; k < 8; ++k)
             {
+                int xPos = j * 8 + k;
+                int yPos = i;
+
                 QColor color;
                 int currentPixel = currentByte >> k & 1;
                 if (currentPixel)
-                  color = Qt::white;
+                  color = chooseColor(xPos);
                 else
                   color = Qt::black;
 
-                int xPos = j * 8 + k;
-                int yPos = i;
                 screen.setPixel(xPos, yPos, color.rgb());
             }
         }
@@ -41,6 +42,20 @@ void Emulator::VRAMtoScreen()
     rotatedScreen = screen.transformed(rotation);
 
     emit screenUpdated(&rotatedScreen);
+}
+
+QColor Emulator::chooseColor(int y)
+{
+    if (y > 223)
+        return Qt::white;
+    else if (y > 191)
+        return Qt::red;
+    else if (y > 71)
+        return Qt::white;
+    else if (y > 15)
+        return Qt::green;
+    else
+        return Qt::white;
 }
 
 void Emulator::inputHandler(const int key, bool pressed)
@@ -78,36 +93,31 @@ void Emulator::run()
     for (int i = ROM_START; i < ROM_SIZE; ++i)
         cpu.memory[i] = fileData.at(i);
 
-    bool running = true;
-    int cyclesTot = 0;
-    bool toggle = true;
-    while (running)
+    int cyclesTillEvent = INTERRUPT_FREQ;
+    bool vblank = true;
+    while (true)
     {
         int cycles = decode(cpu.memory[cpu.registers.PC]);
+        cyclesTillEvent -= cycles;
 
-        if (cyclesTot >= 17066)
+        if (cyclesTillEvent <= 0)
         {
            if (cpu.interruptsEnabled)
            {
                cpu.interruptsEnabled = false;
-               if (toggle)
-               {
+
+               if (vblank)
                    cpu.RST_1();
-                   toggle = false;
-               }
                else
                {
                    cpu.RST_2();
-                   toggle = true;
+                   VRAMtoScreen();
                }
-               VRAMtoScreen();
-               cyclesTot = 0;
+
+               vblank = !vblank;
+               cyclesTillEvent = INTERRUPT_FREQ;
            }
         }
-
-        QThread::usleep(0.5 * cycles);
-
-        cyclesTot += cycles;
     }
 
 }
