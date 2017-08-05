@@ -1,6 +1,7 @@
 #include <cpu.h>
 #include <cstring>
 #include <QtGlobal>
+#include <QSound>
 
 CPU::CPU() : conditionBits(), memory()
 {

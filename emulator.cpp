@@ -12,7 +12,7 @@ Emulator::Emulator()
 
     // This transformation will be applied before showing the screen
     transformation.rotate(-90);
-    transformation.scale(SCALE_FACTOR, SCALE_FACTOR);
+    transformation.scale(SCREEN_SCALE_FACTOR, SCREEN_SCALE_FACTOR);
 }
 
 void Emulator::VRAMtoScreen()

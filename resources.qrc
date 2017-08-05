@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/sfx">
+        <file alias="explosion.wav">sounds/explosion.wav</file>
+        <file alias="fastinvader1.wav">sounds/fastinvader1.wav</file>
+        <file alias="fastinvader2.wav">sounds/fastinvader2.wav</file>
+        <file alias="fastinvader3.wav">sounds/fastinvader3.wav</file>
+        <file alias="fastinvader4.wav">sounds/fastinvader4.wav</file>
+        <file alias="invaderkilled.wav">sounds/invaderkilled.wav</file>
+        <file alias="shoot.wav">sounds/shoot.wav</file>
+        <file alias="ufo_highpitch.wav">sounds/ufo_highpitch.wav</file>
+        <file alias="ufo_lowpitch.wav">sounds/ufo_lowpitch.wav</file>
+    </qresource>
+    <qresource prefix="/roms">
+        <file>invaders.rom</file>
+    </qresource>
+</RCC>

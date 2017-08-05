@@ -15,3 +15,6 @@ HEADERS += \
     cpu.h \
     flagregister.h \
     gui.h
+
+RESOURCES += \
+    resources.qrc
