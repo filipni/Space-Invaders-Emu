@@ -29,7 +29,7 @@ private:
     Emulator emu;
 
 public slots:
-    void showScreen(QImage*);
+    void showScreen(QImage const*);
     void startEmulator();
     void stopEmulator();
     void closeEvent(QCloseEvent*);

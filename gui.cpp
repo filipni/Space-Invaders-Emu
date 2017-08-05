@@ -5,7 +5,6 @@ GUI::GUI()
     layout = new QHBoxLayout(this);
 
     screen = new QLabel(this);
-    screen->setPixmap(QPixmap::fromImage(emu.rotatedScreen));
     layout->addWidget(screen);
 
     startButton = new QPushButton("Start", this);
@@ -17,11 +16,11 @@ GUI::GUI()
     stopButton->setEnabled(false);
     connect(stopButton, SIGNAL(pressed()), this, SLOT(stopEmulator()));
 
-    connect(&emu, SIGNAL(screenUpdated(QImage*)), this, SLOT(showScreen(QImage*)));
+    connect(&emu, SIGNAL(screenUpdated(QImage const*)), this, SLOT(showScreen(QImage const*)));
     connect(this, SIGNAL(inputReceived(const int, bool)), &emu, SLOT(inputHandler(int, bool)));
 }
 
-void GUI::showScreen(QImage* image)
+void GUI::showScreen(QImage const* image)
 {
     screen->setPixmap(QPixmap::fromImage(*image));
 }

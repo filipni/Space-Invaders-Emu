@@ -8,8 +8,11 @@ QTextStream out(stdout);
 
 Emulator::Emulator()
 {
-    screen = QImage(SCREEN_WIDTH_PIXELS, SCREEN_HEIGHT_PIXELS, QImage::Format_RGB32);
-    rotatedScreen = QImage(SCREEN_HEIGHT_PIXELS, SCREEN_WIDTH_PIXELS, QImage::Format_RGB32);
+    originalScreen = QImage(SCREEN_WIDTH_PIXELS, SCREEN_HEIGHT_PIXELS, QImage::Format_RGB32);
+
+    transformation.rotate(-90);
+    transformation.scale(SCALE_FACTOR, SCALE_FACTOR);
+    transformedScreen = originalScreen.transformed(transformation);
 }
 
 void Emulator::VRAMtoScreen()
@@ -32,16 +35,13 @@ void Emulator::VRAMtoScreen()
                 else
                   color = Qt::black;
 
-                screen.setPixel(xPos, yPos, color.rgb());
+                originalScreen.setPixel(xPos, yPos, color.rgb());
             }
         }
     }
 
-    QTransform rotation;
-    rotation.rotate(-90);
-    rotatedScreen = screen.transformed(rotation);
-
-    emit screenUpdated(&rotatedScreen);
+    transformedScreen = originalScreen.transformed(transformation);
+    emit screenUpdated(&transformedScreen);
 }
 
 QColor Emulator::chooseColor(int y)

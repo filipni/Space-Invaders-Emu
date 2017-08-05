@@ -16,6 +16,8 @@ const int SCREEN_HEIGHT_BYTES = 28;
 const int SCREEN_WIDTH_PIXELS = 256;
 const int SCREEN_HEIGHT_PIXELS = 224;
 
+const int SCALE_FACTOR = 3;
+
 const int INTERRUPT_FREQ = 1700000;
 
 class Emulator : public QThread
@@ -23,11 +25,13 @@ class Emulator : public QThread
 Q_OBJECT
 public:
     explicit Emulator();
-    QImage screen;
-    QImage rotatedScreen;
 
 private:
     CPU cpu;
+
+    QImage originalScreen;
+    QImage transformedScreen;
+    QTransform transformation;
 
     double decode(uint8_t);
     void VRAMtoScreen();
@@ -37,7 +41,7 @@ private:
     void run();
 
 signals:
-    void screenUpdated(QImage*);
+    void screenUpdated(QImage const *);
 
 public slots:
     void inputHandler(const int, bool);
