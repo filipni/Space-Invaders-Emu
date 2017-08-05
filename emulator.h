@@ -38,7 +38,6 @@ private:
     QImage transformedScreen;
     QTransform transformation;
 
-    double decode(uint8_t);
     void VRAMtoScreen();
     QColor chooseColor(int);
 

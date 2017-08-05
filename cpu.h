@@ -28,10 +28,13 @@ const int P1_SHOOT = 1 << 4;
 const int P1_LEFT = 1 << 5;
 const int P1_RIGHT = 1 << 6;
 
-const int PORT0 = 0b01110000;
-const int PORT1 = 0b00010000;
-const int PORT2 = 0b00000000;
-const int PORT3 = 0;
+const int PORT0_INIT = 0b01110000;
+const int PORT1_INIT = 0b00010000;
+const int PORT2_INIT = 0;
+const int PORT3_INIT = 0;
+
+const int RST_1_OPCODE = 0xCF;
+const int RST_2_OPCODE = 0xD7;
 
 class CPU
 {
@@ -76,6 +79,10 @@ public:
    uint8_t getBit(uint8_t, uint8_t);
 
    void shiftRegisterOp();
+
+   int runNextInstruction();
+   int decode(uint8_t);
+   bool generateInterrupt(uint8_t);
 
    int CMC();
    int STC();
