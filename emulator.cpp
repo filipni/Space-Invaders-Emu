@@ -10,9 +10,9 @@ Emulator::Emulator()
 {
     originalScreen = QImage(SCREEN_WIDTH_PIXELS, SCREEN_HEIGHT_PIXELS, QImage::Format_RGB32);
 
+    // This transformation will be applied before showing the screen
     transformation.rotate(-90);
     transformation.scale(SCALE_FACTOR, SCALE_FACTOR);
-    transformedScreen = originalScreen.transformed(transformation);
 }
 
 void Emulator::VRAMtoScreen()
@@ -46,13 +46,13 @@ void Emulator::VRAMtoScreen()
 
 QColor Emulator::chooseColor(int y)
 {
-    if (y > 223)
+    if (y >= UPPER_SCREEN)
         return Qt::white;
-    else if (y > 191)
+    else if (y >= UPPER_MIDDLE_SCREEN)
         return Qt::red;
-    else if (y > 71)
+    else if (y >= MIDDLE_SCREEN)
         return Qt::white;
-    else if (y > 15)
+    else if (y >= LOWER_MIDDLE_SCREEN)
         return Qt::green;
     else
         return Qt::white;

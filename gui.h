@@ -30,8 +30,6 @@ private:
 
 public slots:
     void showScreen(QImage const*);
-    void startEmulator();
-    void stopEmulator();
     void closeEvent(QCloseEvent*);
 
 signals:

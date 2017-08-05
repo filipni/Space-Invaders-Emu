@@ -18,6 +18,11 @@ const int SCREEN_HEIGHT_PIXELS = 224;
 
 const int SCALE_FACTOR = 3;
 
+const int UPPER_SCREEN = 224;
+const int UPPER_MIDDLE_SCREEN = 192;
+const int MIDDLE_SCREEN = 72;
+const int LOWER_MIDDLE_SCREEN = 16;
+
 const int INTERRUPT_FREQ = 1700000;
 
 class Emulator : public QThread

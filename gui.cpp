@@ -3,40 +3,20 @@
 GUI::GUI()
 {
     layout = new QHBoxLayout(this);
+    layout->setMargin(0);
 
     screen = new QLabel(this);
     layout->addWidget(screen);
 
-    startButton = new QPushButton("Start", this);
-    layout->addWidget(startButton);
-    connect(startButton, SIGNAL(pressed()), this, SLOT(startEmulator()));
-
-    stopButton = new QPushButton("Stop", this);
-    layout->addWidget(stopButton);
-    stopButton->setEnabled(false);
-    connect(stopButton, SIGNAL(pressed()), this, SLOT(stopEmulator()));
-
     connect(&emu, SIGNAL(screenUpdated(QImage const*)), this, SLOT(showScreen(QImage const*)));
     connect(this, SIGNAL(inputReceived(const int, bool)), &emu, SLOT(inputHandler(int, bool)));
+
+    emu.start();
 }
 
 void GUI::showScreen(QImage const* image)
 {
     screen->setPixmap(QPixmap::fromImage(*image));
-}
-
-void GUI::startEmulator()
-{
-    emu.start();
-    startButton->setEnabled(false);
-    stopButton->setEnabled(true);
-}
-
-void GUI::stopEmulator()
-{
-    emu.terminate();
-    startButton->setEnabled(true);
-    stopButton->setEnabled(false);
 }
 
 void GUI::closeEvent(QCloseEvent*)
