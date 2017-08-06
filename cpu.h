@@ -72,7 +72,10 @@ public:
    uint8_t memory[MEMORY_SIZE];
 
    uint8_t getHighBits(uint16_t);
+   uint8_t getHighBits(uint8_t);
    uint8_t getLowBits(uint16_t);
+   uint8_t getLowBits(uint8_t);
+
    uint16_t create16BitReg(uint8_t, uint8_t);
 
    int addBytes(uint8_t, uint8_t, bool, FlagRegister);

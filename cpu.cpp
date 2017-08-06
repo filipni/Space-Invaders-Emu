@@ -40,9 +40,19 @@ uint8_t CPU::getHighBits(uint16_t reg)
    return (reg & 0xFF00) >> 8;
 }
 
+uint8_t CPU::getHighBits(uint8_t reg)
+{
+    return reg & 0xF0;
+}
+
 uint8_t CPU::getLowBits(uint16_t reg)
 {
    return reg & 0x00FF;
+}
+
+uint8_t CPU::getLowBits(uint8_t reg)
+{
+    return reg & 0x0F;
 }
 
 uint16_t CPU::create16BitReg(uint8_t lowBits, uint8_t highBits)
@@ -54,26 +64,17 @@ int CPU::addBytes(uint8_t byte1, uint8_t byte2, bool carryIn, FlagRegister flags
 {
     uint8_t carry = carryIn ? conditionBits.testBits(CARRY_BIT) : 0;
 
-    int8_t sum = 0;
-    for (int i = 0; i <= 7; ++i)
+    if (flagsToCalc.testBits(AUX_BIT)) // AUX_BIT = carry from lower to higher nibble
     {
-        int8_t term1 = byte1 & 1;
-        int8_t term2 = byte2 & 1;
-
-        sum += (term1 ^ term2 ^ carry) << i;
-        carry = term1 + term2 + carry > 1;
-
-        if (i == 3 && flagsToCalc.testBits(AUX_BIT))
-            conditionBits.setBits(AUX_BIT, carry); // Carry from lower to higher nibble
-
-        byte1 >>= 1;
-        byte2 >>= 1;
+        uint8_t sum = getLowBits(byte1) + getLowBits(byte2) + carry;
+        conditionBits.setBits(AUX_BIT, sum >= 0x10);
     }
 
-    Q_ASSERT(carry == 1 || carry == 0);
+    uint16_t sum = byte1 + byte2 + carry;
+    if (flagsToCalc.testBits(CARRY_BIT))
+        conditionBits.setBits(CARRY_BIT, sum >= 0x100);
 
     // Set the rest of the flags
-    if (flagsToCalc.testBits(CARRY_BIT)) conditionBits.setBits(CARRY_BIT, carry);
     if (flagsToCalc.testBits(ZERO_BIT)) conditionBits.calculateZeroBit(sum);
     if (flagsToCalc.testBits(SIGN_BIT)) conditionBits.calculateSignBit(sum);
     if (flagsToCalc.testBits(PARITY_BIT)) conditionBits.calculateEvenParityBit(sum);
