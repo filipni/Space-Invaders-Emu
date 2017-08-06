@@ -1417,6 +1417,7 @@ int CPU::OUT()
         break;
       case 3:
         output3 = registers.A;
+        emit writeOnPort3(output3);
         break;
       case 4:
         output4 = registers.A;
@@ -1424,6 +1425,7 @@ int CPU::OUT()
         break;
       case 5:
         output5 = registers.A;
+        emit writeOnPort5(output5);
         break;
       case 6:
         output6 = registers.A;

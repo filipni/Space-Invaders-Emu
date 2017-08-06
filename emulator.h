@@ -8,20 +8,20 @@
 #include <QThread>
 #include "cpu.h"
 
-#define ROM_FILE_PATH ":/roms/invaders.rom"
+#define ROM_FILE_PATH ":/roms/invaders"
 
 // Sound files
-#define INVADER_1_SFX ":sfx/fastinvader1.wav"
-#define INVADER_2_SFX ":sfx/fastinvader2.wav"
-#define INVADER_3_SFX ":sfx/fastinvader3.wav"
-#define INVADER_4_SFX ":sfx/fastinvader4.wav"
-#define INVADER_DIES_SFX ":sfx/invaderkilled.wav"
+#define INVADER_1_SFX ":sfx/fastinvader1"
+#define INVADER_2_SFX ":sfx/fastinvader2"
+#define INVADER_3_SFX ":sfx/fastinvader3"
+#define INVADER_4_SFX ":sfx/fastinvader4"
+#define INVADER_DIES_SFX ":sfx/invaderkilled"
 
-#define PLAYER_SHOOTING_SFX ":sfx/shoot.wav"
-#define PLAYER_DIES_SFX ":sfx/explosion.wav"
+#define PLAYER_SHOOTING_SFX ":sfx/shoot"
+#define PLAYER_DIES_SFX ":sfx/explosion"
 
-#define UFO_SFX ":sfx/ufo_highpitch.wav"
-#define UFO_DIES_SFX ":sfx/ufo_lowpitch.wav"
+#define UFO_SFX ":sfx/ufo_highpitch"
+#define UFO_DIES_SFX ":sfx/ufo_lowpitch"
 
 const int SCREEN_WIDTH_BYTES = 32;
 const int SCREEN_HEIGHT_BYTES = 28;
@@ -62,6 +62,8 @@ signals:
 
 public slots:
     void inputHandler(const int, bool);
+    void playSoundPort3(int);
+    void playSoundPort5(int);
 };
 
 #endif // EMULATOR_H

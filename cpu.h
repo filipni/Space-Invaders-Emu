@@ -36,8 +36,12 @@ const int PORT3_INIT = 0;
 const int RST_1_OPCODE = 0xCF;
 const int RST_2_OPCODE = 0xD7;
 
-class CPU
+class CPU : public QObject
 {
+Q_OBJECT
+signals:
+    void writeOnPort3(int);
+    void writeOnPort5(int);
 public:
     FlagRegister conditionBits;
 

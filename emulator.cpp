@@ -3,6 +3,7 @@
 #include <QTextStream>
 #include <QColor>
 #include <QDebug>
+#include <QSound>
 
 QTextStream out(stdout);
 
@@ -13,6 +14,9 @@ Emulator::Emulator()
     // This transformation will be applied before showing the screen
     transformation.rotate(-90);
     transformation.scale(SCREEN_SCALE_FACTOR, SCREEN_SCALE_FACTOR);
+
+    connect(&cpu, SIGNAL(writeOnPort3(int)), this, SLOT(playSoundPort3(int)));
+    connect(&cpu, SIGNAL(writeOnPort5(int)), this, SLOT(playSoundPort5(int)));
 }
 
 void Emulator::VRAMtoScreen()
@@ -76,6 +80,21 @@ void Emulator::inputHandler(const int key, bool pressed)
         cpu.input1 |= bitmask;
     else
         cpu.input1 &= bitmask ^ 0xFF;
+}
+
+void Emulator::playSoundPort3(int port3)
+{
+   if (port3 & 1)
+       return;
+       //QSound::play(UFO_SFX);
+   if (port3 & 2)
+       //return;
+       QSound::play(PLAYER_SHOOTING_SFX);
+}
+
+void Emulator::playSoundPort5(int port5)
+{
+    return;
 }
 
 void Emulator::run()
