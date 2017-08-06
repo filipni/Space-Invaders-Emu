@@ -42,7 +42,7 @@ uint8_t CPU::getHighBits(uint16_t reg)
 
 uint8_t CPU::getHighBits(uint8_t reg)
 {
-    return reg & 0xF0;
+    return (reg & 0xF0) >> 4;
 }
 
 uint8_t CPU::getLowBits(uint16_t reg)
@@ -149,26 +149,21 @@ int CPU::CMA()
 
 int CPU::DAA()
 {
-    int8_t lowerNibble = registers.A & 0x0F;
+    int8_t lowerNibble = getLowBits(registers.A);
     if (lowerNibble > 9 || conditionBits.testBits(AUX_BIT))
     {
-        FlagRegister flagsToCalc(SIGN_BIT | ZERO_BIT | PARITY_BIT | AUX_BIT);
+        FlagRegister flagsToCalc(AUX_BIT);
         registers.A = addBytes(registers.A, 6, false, flagsToCalc);
     }
 
-    int8_t higherNibble = (registers.A & 0xF0) >> 4;
-    if (higherNibble > 9 || conditionBits.testBits(CARRY_BIT))
+    if (getHighBits(registers.A) > 9 || conditionBits.testBits(CARRY_BIT))
     {
         bool oldCarry = conditionBits.testBits(CARRY_BIT);
 
         FlagRegister flagsToCalc(SIGN_BIT | ZERO_BIT | PARITY_BIT | CARRY_BIT);
-        higherNibble = addBytes(higherNibble, 6, false, flagsToCalc);
+        registers.A = addBytes(registers.A, 96, false, flagsToCalc);
 
-        // Change the higher nibble in register A to the newly calculated value
-        registers.A &= 0x0F;
-        registers.A += higherNibble << 4;
-
-        if (!conditionBits.testBits(CARRY_BIT)) // If no carry out occurs, reset carry bit to old value
+        if (!conditionBits.testBits(CARRY_BIT)) // Restore old carry if carry flag was unaffected
             conditionBits.setBits(CARRY_BIT, oldCarry);
     }
 
