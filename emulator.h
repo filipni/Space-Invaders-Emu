@@ -36,7 +36,7 @@ const int UPPER_MIDDLE_SCREEN = 192;
 const int MIDDLE_SCREEN = 72;
 const int LOWER_MIDDLE_SCREEN = 16;
 
-const int INTERRUPT_FREQ = 1700000;
+const int INTERRUPT_FREQ = 1000000;
 
 class Emulator : public QThread
 {

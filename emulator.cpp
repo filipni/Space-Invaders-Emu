@@ -3,7 +3,6 @@
 #include <QTextStream>
 #include <QColor>
 #include <QDebug>
-#include <QSound>
 
 QTextStream out(stdout);
 
@@ -84,17 +83,12 @@ void Emulator::inputHandler(const int key, bool pressed)
 
 void Emulator::playSoundPort3(int port3)
 {
-   if (port3 & 1)
-       return;
-       //QSound::play(UFO_SFX);
-   if (port3 & 2)
-       //return;
-       QSound::play(PLAYER_SHOOTING_SFX);
+    return; // Not implemented yet
 }
 
 void Emulator::playSoundPort5(int port5)
 {
-    return;
+    return; // Not implemented yet
 }
 
 void Emulator::run()
